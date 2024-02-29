@@ -1,0 +1,14 @@
+from django.db import models
+from users.models import User
+
+
+# Modelo de Sugerancias
+class Suggestion(models.Model):
+    body = models.CharField(max_length=100)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+    resolved = models.BooleanField(default=False)
+
+    # Para que se muestre en el modulo de administración
+    def __str__(self):
+        return f"Sugerencia por {self.user.user_name} el {self.date}"
