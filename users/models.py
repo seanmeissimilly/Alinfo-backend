@@ -9,20 +9,20 @@ from django.contrib.auth.models import (
 
 
 class CustomAccountManager(BaseUserManager):
-    def create_user(self, email, user_name, first_name, password, **other_fields):
+    def create_user(self, user_name, email, password, **other_fields):
         if not email:
             raise ValueError(
                 _("Debes proporcionar una dirección de correo electrónico")
             )
+        # Para que el correo y el usuario sean con letras minúsculas.
         email = self.normalize_email(email)
-        user = self.model(
-            email=email, user_name=user_name, first_name=first_name, **other_fields
-        )
+        user_name = self.normalize_email(user_name)
+        user = self.model(user_name=user_name, email=email, **other_fields)
         user.set_password(password)
         user.save()
         return user
 
-    def create_superuser(self, email, user_name, first_name, password, **other_fields):
+    def create_superuser(self, user_name, email, password, **other_fields):
         other_fields.setdefault("is_staff", True)
         other_fields.setdefault("is_superuser", True)
         other_fields.setdefault("is_active", True)
@@ -32,7 +32,7 @@ class CustomAccountManager(BaseUserManager):
             raise ValueError("Superusuario debe ser asignada a is_staff=True.")
         if other_fields.get("is_superuser") is not True:
             raise ValueError("Superusuario debe ser asignada a is_superuser=True.")
-        return self.create_user(email, user_name, first_name, password, **other_fields)
+        return self.create_user(user_name, email, password, **other_fields)
 
 
 # Definir los posibles valores del campo role
@@ -45,8 +45,8 @@ ROL_CHOICES = (
 
 # Modelo de Usuario.
 class User(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(_("email address"), unique=True)
     user_name = models.CharField(max_length=150, unique=True)
+    email = models.EmailField(_("email address"), unique=True)
     first_name = models.CharField(max_length=150)
     start_date = models.DateTimeField(default=timezone.now)
     bio = models.TextField(_("bio"), max_length=500, blank=True)
@@ -60,8 +60,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     # Para los roles, establezco por defecto reader.
     role = models.CharField(max_length=10, choices=ROL_CHOICES, default="reader")
     objects = CustomAccountManager()
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["user_name", "first_name"]
+    USERNAME_FIELD = "user_name"
+    REQUIRED_FIELDS = ["email"]
 
     # Para que se muestre en el modulo de administración
     def __str__(self):

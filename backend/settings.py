@@ -27,7 +27,7 @@ SECRET_KEY = "django-insecure-7hrts==e^r+b5f5k2v)473e6+@vw352^)6xl@t=c3!ek714uk=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "172.17.13.1"]
 
 
 # Application definition
@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "documents",
     "multimedia",
     "suggestions",
+    "rest_framework_simplejwt.token_blacklist",
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -68,7 +69,8 @@ REST_FRAMEWORK = {
 
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
+    # tiempo de duración del token.
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=120),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": False,
