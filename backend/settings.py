@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "multimedia",
     "suggestions",
     "rest_framework_simplejwt.token_blacklist",
+    "drf_yasg",  # Para Swagger y ReDoc
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -145,7 +146,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": "alinfo",
         "USER": "postgres",
-        "PASSWORD": "Contra12345*",
+        "PASSWORD": "Calle765121",
         "HOST": "localhost",
         "PORT": "5432",
     }
