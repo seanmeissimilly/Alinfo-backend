@@ -60,8 +60,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     # Para los roles, establezco por defecto reader.
     role = models.CharField(max_length=10, choices=ROL_CHOICES, default="reader")
     objects = CustomAccountManager()
-    USERNAME_FIELD = "user_name"
-    REQUIRED_FIELDS = ["email"]
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["user_name"]
 
     # Para que se muestre en el modulo de administración
     def __str__(self):
