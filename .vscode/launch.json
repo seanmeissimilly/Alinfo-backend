@@ -5,13 +5,15 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Python Debugger: Django",
       "type": "debugpy",
       "request": "launch",
+      "args": ["runserver", "8000"],
+      "django": true,
+      "autoStartBrowser": true,
+      "program": "${workspaceFolder}\\manage.py",
       "console": "integratedTerminal",
-      "name": "Python: Django",
-      "program": "${workspaceFolder}/manage.py",
-      "args": ["runserver", "0:8000"],
-      "django": true
+      "python": "${workspaceFolder}/.venv/Scripts/python"
     }
   ]
 }

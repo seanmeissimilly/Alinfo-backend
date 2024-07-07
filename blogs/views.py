@@ -10,6 +10,7 @@ from users.permissions import IsAdmin, IsEditor, IsReader
 from django.http import JsonResponse
 
 
+
 @api_view(["GET"])
 # Reviso si está autentificado.
 @permission_classes([IsAuthenticated])
@@ -48,7 +49,8 @@ def putBlog(request, pk):
     data = request.data
     blog = Blog.objects.get(id=pk)
     serializer = BlogSerializer(instance=blog, data=data)
-    if blog.user == request.user:
+     #Reviso que el usuario que hizo el blog sea el mismo que la esté actualizando o que tenga el rol de admin.
+    if blog.user == request.user or request.user.role == "admin" :
         if serializer.is_valid():
             serializer.save()
     else:
@@ -61,7 +63,9 @@ def putBlog(request, pk):
 @permission_classes([IsAuthenticated])
 def deleteBlog(request, pk):
     blog = Blog.objects.get(id=pk)
-    if blog.user == request.user:
+  
+    #Reviso que el usuario que hizo el blog sea el mismo que la esté borrando o que tenga el rol de admin.
+    if  blog.user == request.user or request.user.role == "admin" :     
         blog.delete()
         return Response("Publicación Eliminada")
     else:

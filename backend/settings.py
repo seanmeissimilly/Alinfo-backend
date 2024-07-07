@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1", "172.17.13.1"]
 # Application definition
 
 INSTALLED_APPS = [
+    #  "drf_yasg", 
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -49,8 +50,9 @@ INSTALLED_APPS = [
     "documents",
     "multimedia",
     "suggestions",
-    "rest_framework_simplejwt.token_blacklist",
-    "drf_yasg",  # Para Swagger y ReDoc
+    "rest_framework_simplejwt.token_blacklist", 
+    
+   
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -107,6 +109,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.locale.LocaleMiddleware",
+   
 ]
 
 ROOT_URLCONF = "backend.urls"
