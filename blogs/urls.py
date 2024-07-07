@@ -10,4 +10,5 @@ urlpatterns = [
     path("put/<int:pk>/", views.putBlog),
     path("delete/<int:pk>/", views.deleteBlog),
     path("comment/<int:pk>/", views.comment),
+    path("image/<int:pk>/", views.uploadImage),
 ]

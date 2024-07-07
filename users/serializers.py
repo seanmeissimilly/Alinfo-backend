@@ -20,12 +20,6 @@ class UserSerializer(serializers.ModelSerializer):
             "start_date",
         ]
 
-    # def __init__(self, *args, **kwargs):
-    #     super(UserSerializer, self).__init__(*args, **kwargs)
-    #     self.fields["user_name"].required = True
-    #     self.fields["email"].required = True
-    #     self.fields["password"].required = True
-
     def get_is_admin(self, obj):
         return obj.is_staff
 
