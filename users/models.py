@@ -52,7 +52,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     bio = models.TextField(_("bio"), max_length=500, blank=True)
     # Foto por defecto de los usuarios al crearse.
     image = models.ImageField(
-        null=True, blank=True, default="/profile_picture/Isotipo.png"
+        null=True,
+        blank=True,
+        default="/profile_picture/Isotipo.png",
+        upload_to="profile_picture/",
     )
     is_staff = models.BooleanField(default=False)
     # Para llevar si el usuario está activo.
