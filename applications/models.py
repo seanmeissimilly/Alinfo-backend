@@ -22,7 +22,7 @@ class Application(models.Model):
     applicationclassification = models.ForeignKey(
         Applicationclassification, on_delete=models.SET_NULL, null=True, blank=True
     )
-    REQUIRED_FIELDS = ["name"]
+    REQUIRED_FIELDS = ["name", "user"]
 
     # Para que se muestre en el modulo de administración
     def __str__(self):

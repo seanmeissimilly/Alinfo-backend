@@ -21,6 +21,7 @@ class Multimedia(models.Model):
     multimediaclassification = models.ForeignKey(
         Multimediaclassification, on_delete=models.SET_NULL, null=True, blank=True
     )
+    REQUIRED_FIELDS = ["name", "user"]
 
     # Para que se muestre en el modulo de administración
     def __str__(self):

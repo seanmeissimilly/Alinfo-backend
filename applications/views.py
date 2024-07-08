@@ -4,6 +4,7 @@ from .serializers import ApplicationSerializer, ApplicationclassificationSeriali
 from .models import Application, Applicationclassification
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
+from users.permissions import IsAdmin, IsEditor, IsReader
 
 
 # Solo si el usuario está autenticado.
@@ -14,7 +15,7 @@ class ApplicationView(viewsets.ModelViewSet):
 
 
 # Solo si el usuario está autenticado.
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated & IsAdmin])
 class ApplicationclassificationView(viewsets.ModelViewSet):
     serializer_class = ApplicationclassificationSerializer
     queryset = Applicationclassification.objects.all()

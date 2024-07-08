@@ -8,6 +8,7 @@ class Suggestion(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     date = models.DateTimeField(auto_now_add=True)
     resolved = models.BooleanField(default=False)
+    REQUIRED_FIELDS = ["body", "user"]
 
     # Para que se muestre en el modulo de administración
     def __str__(self):

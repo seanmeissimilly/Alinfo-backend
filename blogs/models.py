@@ -8,6 +8,7 @@ class Blog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     date = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(null=True, blank=True, upload_to="blog_picture/")
+    REQUIRED_FIELDS = ["body", "user"]
 
     # Para que se muestre en el modulo de administración
     def __str__(self):
@@ -16,10 +17,11 @@ class Blog(models.Model):
 
 # Modelo de Comentario
 class Comment(models.Model):
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, null=True)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     text = models.CharField(max_length=100)
     date = models.DateTimeField(auto_now_add=True)
+    REQUIRED_FIELDS = ["blog", "user", "text"]
 
     # Para que se muestre en el modulo de administración
     def __str__(self):
