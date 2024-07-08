@@ -7,7 +7,7 @@ class Blog(models.Model):
     body = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     date = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(null=True, blank=True)
+    image = models.ImageField(null=True, blank=True, upload_to="blog_picture/")
 
     # Para que se muestre en el modulo de administración
     def __str__(self):
