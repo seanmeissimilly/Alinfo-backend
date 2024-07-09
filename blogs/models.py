@@ -13,7 +13,7 @@ class Blog(models.Model):
         upload_to="blog_picture/",
         default="/blog_picture/noticia.jpg",
     )
-    REQUIRED_FIELDS = ["body", "user"]
+    REQUIRED_FIELDS = ["body"]
 
     # Para que se muestre en el modulo de administración
     def __str__(self):
@@ -26,7 +26,7 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     text = models.CharField(max_length=100)
     date = models.DateTimeField(auto_now_add=True)
-    REQUIRED_FIELDS = ["blog", "user", "text"]
+    REQUIRED_FIELDS = ["blog", "text"]
 
     # Para que se muestre en el modulo de administración
     def __str__(self):

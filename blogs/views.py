@@ -34,10 +34,19 @@ def getSoloBlog(request, pk):
 # @schema(None)  # Esto desactiva la generación automática de esquemas
 def postBlog(request):
     data = request.data
-    blog = Blog.objects.create(
-        user=request.user,
-        body=data["body"],
-    )
+    image_file = request.FILES.get("image")
+
+    # Verifico si me pasaron alguna imagen.
+    if image_file is not None:
+        blog = Blog.objects.create(
+            user=request.user, body=data["body"], image=image_file
+        )
+    else:
+        blog = Blog.objects.create(
+            user=request.user,
+            body=data["body"],
+        )
+
     serializer = BlogSerializer(blog, many=False)
     return Response(serializer.data)
 
