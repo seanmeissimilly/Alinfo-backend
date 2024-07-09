@@ -31,21 +31,22 @@ def getSoloBlog(request, pk):
 @api_view(["POST"])
 # Reviso si está autentificado y si tiene rol de Editor o Administrador.
 @permission_classes([IsAuthenticated & IsAdmin | IsAuthenticated & IsEditor])
-# @schema(None)  # Esto desactiva la generación automática de esquemas
 def postBlog(request):
     data = request.data
     image_file = request.FILES.get("image")
 
-    # Verifico si me pasaron alguna imagen.
+    # Creo un diccionario con los datos que siempre se pasan.
+    blog_data = {
+        "user": request.user,
+        "body": data["body"],
+    }
+
+    # Si me pasaron alguna imagen, la añado al diccionario.
     if image_file is not None:
-        blog = Blog.objects.create(
-            user=request.user, body=data["body"], image=image_file
-        )
-    else:
-        blog = Blog.objects.create(
-            user=request.user,
-            body=data["body"],
-        )
+        blog_data["image"] = image_file
+
+    # Creo el objeto Blog con los datos del diccionario.
+    blog = Blog.objects.create(**blog_data)
 
     serializer = BlogSerializer(blog, many=False)
     return Response(serializer.data)
