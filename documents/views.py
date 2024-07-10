@@ -11,14 +11,14 @@ from rest_framework.permissions import IsAuthenticated
 from users.permissions import IsAdmin, IsEditor, IsReader
 
 
-# Solo si el usuario está autenticado.
+# Solo si el usuario está autenticado y es Admin.
 @permission_classes([IsAuthenticated & IsAdmin])
 class DocumenttypesView(viewsets.ModelViewSet):
     serializer_class = DocumenttypesSerializer
     queryset = Documenttypes.objects.all()
 
 
-# Solo si el usuario está autenticado.
+# Solo si el usuario está autenticado y es Admin.
 @permission_classes([IsAuthenticated & IsAdmin])
 class DocumentclassificationView(viewsets.ModelViewSet):
     serializer_class = DocumentclassificationSerializer
