@@ -11,6 +11,7 @@ from .models import User
 from .serializers import UserSerializer, UserSerializerWithToken
 
 
+# todo:Login
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
@@ -27,6 +28,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 
+# todo:Register
 @api_view(["POST"])
 def register(request):
     data = request.data
@@ -44,8 +46,9 @@ def register(request):
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
+# todo:Update
 @api_view(["PUT"])
-# Reviso si está autentificado.
+# !:Reviso si está autentificado.
 @permission_classes([IsAuthenticated])
 def putUser(request):
     user = request.user
@@ -61,8 +64,9 @@ def putUser(request):
     return Response(serializer.data)
 
 
+# todo:update profile image user
 @api_view(["POST"])
-# Reviso si está autentificado.
+# !: Reviso si está autentificado.
 @permission_classes([IsAuthenticated])
 def uploadImage(request):
     data = request.data
@@ -73,8 +77,9 @@ def uploadImage(request):
     return Response("Imagen subida")
 
 
+# todo:List authenticated user
 @api_view(["GET"])
-# Reviso si está autentificado.
+# !: Reviso si está autentificado.
 @permission_classes([IsAuthenticated])
 def getUserProfile(request):
     user = request.user
@@ -82,8 +87,9 @@ def getUserProfile(request):
     return Response(serializer.data)
 
 
+# todo:List solo
 @api_view(["GET"])
-# Reviso si está autentificado.
+# !: Reviso si está autentificado.
 @permission_classes([IsAuthenticated])
 def getSoloUser(request, pk):
     user = User.objects.get(id=pk)
@@ -91,10 +97,26 @@ def getSoloUser(request, pk):
     return Response(serializer.data)
 
 
+# todo:List all
 @api_view(["GET"])
-# Reviso si está autentificado.
+# !: Reviso si está autentificado.
 @permission_classes([IsAuthenticated])
 def getUsers(request):
     users = User.objects.all()
     serializer = UserSerializer(users, many=True)
     return Response(serializer.data)
+
+
+# todo:Delete
+@api_view(["DELETE"])
+# !: Reviso si está autentificado y es tiene rol de Admin.
+@permission_classes([IsAuthenticated & IsAdmin])
+def deleteUser(request, pk):
+    user_delete = User.objects.get(id=pk)
+    user = request.user
+    # !: Reviso que el usuario que hizo la petición tenga el rol de admin.
+    if user.role == "admin":
+        user_delete.delete()
+        return Response("Usuario Eliminado")
+    else:
+        return Response({"Error": "No autorizado"}, status=status.HTTP_401_UNAUTHORIZED)
