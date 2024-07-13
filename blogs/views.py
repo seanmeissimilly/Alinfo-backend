@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view, permission_classes, schema
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import BlogSerializer
+from .serializers import BlogSerializer, CommentSerializer
 from .models import Blog, Comment
 from users.models import User
 from users.permissions import IsAdmin, IsEditor, IsReader
@@ -16,7 +16,7 @@ from rest_framework.schemas import ManualSchema
 def getBlogs(request):
     blog = Blog.objects.filter().order_by("-date")
     serializer = BlogSerializer(blog, many=True)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(["GET"])
@@ -25,7 +25,7 @@ def getBlogs(request):
 def getSoloBlog(request, pk):
     blog = Blog.objects.get(id=pk)
     serializer = BlogSerializer(blog, many=False)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(["POST"])
@@ -49,7 +49,7 @@ def postBlog(request):
     blog = Blog.objects.create(**blog_data)
 
     serializer = BlogSerializer(blog, many=False)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 @api_view(["POST"])
@@ -73,7 +73,12 @@ def uploadImage(request, pk):
 @permission_classes([IsAuthenticated])
 def putBlog(request, pk):
     data = request.data
-    blog = Blog.objects.get(id=pk)
+    try:
+        blog = Blog.objects.get(id=pk)
+    except Blog.DoesNotExist:
+        return Response(
+            {"Error": "Blog no encontrado"}, status=status.HTTP_404_NOT_FOUND
+        )
     serializer = BlogSerializer(instance=blog, data=data)
     #!: Reviso que el usuario que hizo el blog sea el mismo que la esté actualizando o que tenga el rol de admin.
     if blog.user == request.user or request.user.role == "admin":
@@ -93,7 +98,7 @@ def deleteBlog(request, pk):
         blog = Blog.objects.get(id=pk)
     except Blog.DoesNotExist:
         return Response(
-            {"Error": "Publicación no encontrada"}, status=status.HTTP_404_NOT_FOUND
+            {"Error": "Blog no encontrado"}, status=status.HTTP_404_NOT_FOUND
         )
 
     #!: Reviso que el usuario que hizo el blog sea el mismo que la esté borrando o que tenga el rol de admin.
@@ -108,10 +113,16 @@ def deleteBlog(request, pk):
 #!: Reviso si está autentificado.
 @permission_classes([IsAuthenticated])
 def comment(request, pk):
-    blog = Blog.objects.get(id=pk)
+    try:
+        blog = Blog.objects.get(id=pk)
+    except Blog.DoesNotExist:
+        return Response(
+            {"error": "Blog no encontrado"}, status=status.HTTP_404_NOT_FOUND
+        )
     user = request.user
     data = request.data
     comment = Comment.objects.create(user=user, blog=blog, text=data["text"])
-    comments = blog.comment_set.all()
+    serializer = CommentSerializer(instance=comment)
     blog.save()
-    return Response("Comentario Añadido")
+
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
