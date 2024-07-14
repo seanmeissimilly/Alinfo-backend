@@ -54,7 +54,7 @@ def postBlog(request):
 
 @api_view(["POST"])
 #!: Reviso si está autentificado.
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated & IsAdmin | IsAuthenticated & IsEditor])
 def uploadImage(request, pk):
     data = request.data
     user = data["user"]
@@ -70,7 +70,7 @@ def uploadImage(request, pk):
 
 @api_view(["PUT"])
 # !: Reviso si está autentificado.
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated & IsAdmin | IsAuthenticated & IsEditor])
 def putBlog(request, pk):
     data = request.data
     try:
@@ -91,7 +91,7 @@ def putBlog(request, pk):
 
 @api_view(["DELETE"])
 #!: Reviso si está autentificado.
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated & IsAdmin | IsAuthenticated & IsEditor])
 def deleteBlog(request, pk):
     # Busco el blog segun el id.
     try:
