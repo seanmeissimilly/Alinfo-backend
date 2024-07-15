@@ -40,7 +40,7 @@ def register(request):
             password=make_password(data["password"]),
         )
         serializer = UserSerializerWithToken(user, many=False)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     except:
         message = {"detalles": "Algo salió mal"}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
@@ -61,7 +61,7 @@ def putUser(request):
     if data["password"] != "":
         user.password = make_password(data["password"])
     user.save()
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
 
 
 # todo:update profile image user
@@ -74,7 +74,7 @@ def uploadImage(request):
     user = User.objects.get(id=user_id)
     user.image = request.FILES.get("image")
     user.save()
-    return Response("Imagen subida")
+    return Response("Imagen subida", status=status.HTTP_202_ACCEPTED)
 
 
 # todo:List authenticated user
@@ -84,7 +84,7 @@ def uploadImage(request):
 def getUserProfile(request):
     user = request.user
     serializer = UserSerializer(user, many=False)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 # todo:List solo
@@ -92,9 +92,14 @@ def getUserProfile(request):
 # !: Reviso si está autentificado.
 @permission_classes([IsAuthenticated])
 def getSoloUser(request, pk):
-    user = User.objects.get(id=pk)
+    try:
+        user = User.objects.get(id=pk)
+    except User.DoesNotExist:
+        return Response(
+            {"Error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND
+        )
     serializer = UserSerializer(user, many=False)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 # todo:List all
@@ -104,7 +109,7 @@ def getSoloUser(request, pk):
 def getUsers(request):
     users = User.objects.all()
     serializer = UserSerializer(users, many=True)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 # todo:Delete
@@ -112,11 +117,16 @@ def getUsers(request):
 # !: Reviso si está autentificado y es tiene rol de Admin.
 @permission_classes([IsAuthenticated & IsAdmin])
 def deleteUser(request, pk):
-    user_delete = User.objects.get(id=pk)
+    try:
+        user_delete = User.objects.get(id=pk)
+    except User.DoesNotExist:
+        return Response(
+            {"Error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND
+        )
     user = request.user
     # !: Reviso que el usuario que hizo la petición tenga el rol de admin.
     if user.role == "admin":
         user_delete.delete()
-        return Response("Usuario Eliminado")
+        return Response("Usuario Eliminado", status=status.HTTP_200_OK)
     else:
         return Response({"Error": "No autorizado"}, status=status.HTTP_401_UNAUTHORIZED)
