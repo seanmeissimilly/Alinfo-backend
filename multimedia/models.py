@@ -13,7 +13,7 @@ class Multimediaclassification(models.Model):
 
 # Modelo de Multimedia
 class Multimedia(models.Model):
-    name = models.CharField(max_length=100)
+    title = models.CharField(max_length=100)
     data = models.FileField(upload_to="multimedia/", null=True, blank=True)
     description = models.TextField(max_length=500, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
@@ -21,8 +21,8 @@ class Multimedia(models.Model):
     multimediaclassification = models.ForeignKey(
         Multimediaclassification, on_delete=models.SET_NULL, null=True, blank=True
     )
-    REQUIRED_FIELDS = ["name", "user"]
+    REQUIRED_FIELDS = ["title"]
 
     # Para que se muestre en el modulo de administración
     def __str__(self):
-        return self.name
+        return self.title

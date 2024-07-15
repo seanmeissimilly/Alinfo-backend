@@ -13,7 +13,7 @@ class Applicationclassification(models.Model):
 
 # Modelo de Applications
 class Application(models.Model):
-    name = models.CharField(max_length=100)
+    title = models.CharField(max_length=100)
     version = models.CharField(max_length=20, blank=True)
     description = models.TextField(max_length=500, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
@@ -26,4 +26,4 @@ class Application(models.Model):
 
     # Para que se muestre en el modulo de administración
     def __str__(self):
-        return self.name
+        return self.title
