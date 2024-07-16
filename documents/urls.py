@@ -9,6 +9,4 @@ router.register(r"classification", views.DocumentclassificationView)
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("types/", views.getDocumentTypes),
-    path("classification/", views.getDocumentClassification),
 ]
