@@ -4,7 +4,7 @@ from .serializers import SuggestionSerializer
 from .models import Suggestion
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
-from users.permissions import IsAdmin, IsEditor, IsReader
+from users.permissions import IsOwnerOrAdmin
 
 
 # Solo si el usuario está autenticado.
@@ -12,3 +12,10 @@ from users.permissions import IsAdmin, IsEditor, IsReader
 class SuggestionView(viewsets.ModelViewSet):
     serializer_class = SuggestionSerializer
     queryset = Suggestion.objects.all()
+
+    def get_permissions(self):
+        if self.request.method in ["PUT", "DELETE"]:
+            self.permission_classes = [IsAuthenticated, IsOwnerOrAdmin]
+        else:
+            self.permission_classes = [IsAuthenticated]
+        return super().get_permissions()
