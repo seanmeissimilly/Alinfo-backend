@@ -5,7 +5,7 @@ from suggestions import views
 
 
 router = routers.DefaultRouter()
-router.register(r"", views.SuggestionView, basename="suggestions")
+router.register(r"", views.SuggestionView)
 
 urlpatterns = [
     path("", include(router.urls)),
