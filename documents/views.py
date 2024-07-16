@@ -9,6 +9,10 @@ from .models import Documenttypes
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from users.permissions import IsAdmin, IsEditor, IsReader
+from rest_framework import serializers
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from rest_framework import status
 
 
 # Solo si el usuario está autenticado y es Admin.
@@ -18,15 +22,19 @@ class DocumenttypesView(viewsets.ModelViewSet):
     queryset = Documenttypes.objects.all()
 
 
-# Solo si el usuario está autenticado y es Admin.
+@api_view(["GET"])
+#!: Reviso si está autentificado.
 @permission_classes([IsAuthenticated])
-class DocumentclassificationView(viewsets.ModelViewSet):
-    serializer_class = DocumentclassificationSerializer
-    queryset = Documentclassification.objects.all()
+def getDocumentTypes(request):
+    type = Documenttypes.objects.all()
+    serializer = Documenttypes(type, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-# Solo si el usuario está autenticado.
+@api_view(["GET"])
+#!: Reviso si está autentificado.
 @permission_classes([IsAuthenticated])
-class DocumentView(viewsets.ModelViewSet):
-    serializer_class = DocumentSerializer
-    queryset = Document.objects.all()
+def getDocumentClassification(request):
+    classification = Documentclassification.objects.all()
+    serializer = Documentclassification(classification, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
