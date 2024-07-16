@@ -15,7 +15,7 @@ class ApplicationView(viewsets.ModelViewSet):
 
 
 # Solo si el usuario está autenticado.
-@permission_classes([IsAuthenticated & IsAdmin])
+@permission_classes([IsAuthenticated])
 class ApplicationclassificationView(viewsets.ModelViewSet):
     serializer_class = ApplicationclassificationSerializer
     queryset = Applicationclassification.objects.all()

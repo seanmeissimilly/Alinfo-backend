@@ -12,14 +12,14 @@ from users.permissions import IsAdmin, IsEditor, IsReader
 
 
 # Solo si el usuario está autenticado y es Admin.
-@permission_classes([IsAuthenticated & IsAdmin])
+@permission_classes([IsAuthenticated])
 class DocumenttypesView(viewsets.ModelViewSet):
     serializer_class = DocumenttypesSerializer
     queryset = Documenttypes.objects.all()
 
 
 # Solo si el usuario está autenticado y es Admin.
-@permission_classes([IsAuthenticated & IsAdmin])
+@permission_classes([IsAuthenticated])
 class DocumentclassificationView(viewsets.ModelViewSet):
     serializer_class = DocumentclassificationSerializer
     queryset = Documentclassification.objects.all()

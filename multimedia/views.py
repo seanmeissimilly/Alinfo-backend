@@ -15,7 +15,7 @@ class MultimediaView(viewsets.ModelViewSet):
 
 
 # Solo si el usuario está autenticado.
-@permission_classes([IsAuthenticated & IsAdmin])
+@permission_classes([IsAuthenticated])
 class MultimediaclassificationView(viewsets.ModelViewSet):
     serializer_class = MultimediaclassificationSerializer
     queryset = Multimediaclassification.objects.all()
