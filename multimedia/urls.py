@@ -5,10 +5,8 @@ from rest_framework.documentation import include_docs_urls
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register(r"", views.MultimediaView, "multimedia")
-router.register(
-    r"classification", views.MultimediaclassificationView, "multimediaclassification"
-)
+router.register(r"", views.MultimediaView, basename="multimedia")
+router.register(r"classification", views.MultimediaclassificationView)
 
 urlpatterns = [
     path("", include(router.urls)),
