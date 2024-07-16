@@ -6,7 +6,7 @@ from rest_framework import routers
 
 
 router = routers.DefaultRouter()
-router.register(r"", views.ApplicationView)
+router.register(r"app", views.ApplicationView)
 router.register(r"classification", views.ApplicationclassificationView)
 
 urlpatterns = [
