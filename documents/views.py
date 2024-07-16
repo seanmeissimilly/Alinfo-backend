@@ -15,11 +15,11 @@ from rest_framework.response import Response
 from rest_framework import status
 
 
-# Solo si el usuario está autenticado y es Admin.
+# Solo si el usuario está autenticado.
 @permission_classes([IsAuthenticated])
-class DocumenttypesView(viewsets.ModelViewSet):
-    serializer_class = DocumenttypesSerializer
-    queryset = Documenttypes.objects.all()
+class DocumentView(viewsets.ModelViewSet):
+    serializer_class = DocumentSerializer
+    queryset = Document.objects.all()
 
 
 @api_view(["GET"])
