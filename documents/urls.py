@@ -7,10 +7,8 @@ from rest_framework import routers
 
 router = routers.DefaultRouter()
 router.register(r"", views.DocumentView, "documents")
-router.register(r"types", views.DocumenttypesView, "documentstypes")
-router.register(
-    r"classification", views.DocumentclassificationView, "documentsclassification"
-)
+router.register(r"types", views.DocumenttypesView, "types")
+router.register(r"classification", views.DocumentclassificationView, "classification")
 
 urlpatterns = [
     path("", include(router.urls)),
