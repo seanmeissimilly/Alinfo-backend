@@ -13,6 +13,10 @@ class SuggestionView(viewsets.ModelViewSet):
     serializer_class = SuggestionSerializer
     queryset = Suggestion.objects.all()
 
+    def perform_create(self, serializer):
+        # Asignar el usuario autenticado al campo 'user'
+        serializer.save(user=self.request.user)
+
     def get_permissions(self):
         if self.request.method in ["PUT", "DELETE"]:
             self.permission_classes = [IsAuthenticated, IsOwnerOrAdmin]

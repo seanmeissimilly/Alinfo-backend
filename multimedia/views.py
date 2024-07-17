@@ -13,6 +13,10 @@ class MultimediaView(viewsets.ModelViewSet):
     serializer_class = MultimediaSerializer
     queryset = Multimedia.objects.all()
 
+    def perform_create(self, serializer):
+        # Asignar el usuario autenticado al campo 'user'
+        serializer.save(user=self.request.user)
+
     def get_permissions(self):
         if self.request.method == "POST":
             self.permission_classes = [IsAuthenticated, IsAdmin | IsEditor]
