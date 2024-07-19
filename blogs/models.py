@@ -4,7 +4,7 @@ from users.models import User
 
 # Modelo de Blog
 class Blog(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=200)
     body = models.CharField(max_length=500)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     date = models.DateTimeField(auto_now_add=True)
@@ -25,7 +25,7 @@ class Blog(models.Model):
 class Comment(models.Model):
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    text = models.CharField(max_length=200)
+    text = models.CharField(max_length=300)
     date = models.DateTimeField(auto_now_add=True)
     REQUIRED_FIELDS = ["blog", "text"]
 

@@ -4,7 +4,7 @@ from users.models import User
 
 # Creo un nomenclador para clasificar los documentos.
 class Documentclassification(models.Model):
-    description = models.CharField(max_length=50, unique=True)
+    description = models.CharField(max_length=100, unique=True)
 
     # Para que se muestre en el modulo de administración
     def __str__(self):
@@ -13,7 +13,7 @@ class Documentclassification(models.Model):
 
 # Creo un nomenclador para tipos de documentos.
 class Documenttypes(models.Model):
-    description = models.CharField(max_length=50, unique=True)
+    description = models.CharField(max_length=100, unique=True)
 
     # Para que se muestre en el modulo de administración
     def __str__(self):
@@ -22,7 +22,7 @@ class Documenttypes(models.Model):
 
 # Modelo de Documentos
 class Document(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=200)
     author = models.TextField(max_length=200, blank=True)
     data = models.FileField(upload_to="documents/", null=True, blank=True)
     description = models.TextField(max_length=500, blank=True)

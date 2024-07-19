@@ -4,7 +4,7 @@ from users.models import User
 
 # Modelo de Sugerancias
 class Suggestion(models.Model):
-    body = models.CharField(max_length=100)
+    body = models.CharField(max_length=500)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     date = models.DateTimeField(auto_now_add=True)
     resolved = models.BooleanField(default=False)
