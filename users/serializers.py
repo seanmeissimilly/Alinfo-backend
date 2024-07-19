@@ -15,7 +15,6 @@ class UserSerializer(serializers.ModelSerializer):
             "role",
             "is_admin",
             "bio",
-            "first_name",
             "image",
             "start_date",
         ]
@@ -36,7 +35,6 @@ class UserSerializerWithToken(UserSerializer):
             "role",
             "is_admin",
             "bio",
-            "first_name",
             "image",
             "start_date",
             "token",

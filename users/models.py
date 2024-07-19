@@ -47,7 +47,6 @@ ROL_CHOICES = (
 class User(AbstractBaseUser, PermissionsMixin):
     user_name = models.CharField(max_length=150, unique=True)
     email = models.EmailField(_("email address"), unique=True)
-    first_name = models.CharField(max_length=150)
     start_date = models.DateTimeField(default=timezone.now)
     bio = models.TextField(_("bio"), max_length=500, blank=True)
     # Foto por defecto de los usuarios al crearse.

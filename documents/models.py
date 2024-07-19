@@ -23,6 +23,7 @@ class Documenttypes(models.Model):
 # Modelo de Documentos
 class Document(models.Model):
     title = models.CharField(max_length=100)
+    author = models.TextField(max_length=200, blank=True)
     data = models.FileField(upload_to="documents/", null=True, blank=True)
     description = models.TextField(max_length=500, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
