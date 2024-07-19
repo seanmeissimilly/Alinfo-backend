@@ -1,6 +1,9 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
+from rest_framework import routers
 
+router = routers.DefaultRouter()
+router.register(r"comment", views.CommentView)
 
 urlpatterns = [
     # Rutas de la aplicación Blog
@@ -9,6 +12,7 @@ urlpatterns = [
     path("post/", views.postBlog),
     path("put/<int:pk>/", views.putBlog),
     path("delete/<int:pk>/", views.deleteBlog),
-    path("comment/<int:pk>/", views.comment),
     path("image/<int:pk>/", views.uploadImage),
+    # Rutas de Comentario.
+    path("", include(router.urls)),
 ]

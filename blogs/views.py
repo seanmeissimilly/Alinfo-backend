@@ -6,8 +6,8 @@ from rest_framework import status
 from .serializers import BlogSerializer, CommentSerializer
 from .models import Blog, Comment
 from users.models import User
-from users.permissions import IsAdmin, IsEditor, IsReader
-from rest_framework.schemas import ManualSchema
+from users.permissions import IsAdmin, IsEditor, IsOwnerOrAdmin
+from rest_framework import viewsets
 
 
 @api_view(["GET"])
@@ -120,20 +120,17 @@ def deleteBlog(request, pk):
         return Response({"Error": "No autorizado"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
-@api_view(["POST"])
-#!: Reviso si está autentificado.
-@permission_classes([IsAuthenticated])
-def comment(request, pk):
-    try:
-        blog = Blog.objects.get(id=pk)
-    except Blog.DoesNotExist:
-        return Response(
-            {"error": "Blog no encontrado"}, status=status.HTTP_404_NOT_FOUND
-        )
-    user = request.user
-    data = request.data
-    comment = Comment.objects.create(user=user, blog=blog, text=data["text"])
-    serializer = CommentSerializer(instance=comment)
-    blog.save()
+class CommentView(viewsets.ModelViewSet):
+    serializer_class = CommentSerializer
+    queryset = Comment.objects.all()
 
-    return Response(serializer.data, status=status.HTTP_201_CREATED)
+    def perform_create(self, serializer):
+        # Asignar el usuario autenticado al campo 'user'
+        serializer.save(user=self.request.user)
+
+    def get_permissions(self):
+        if self.request.method in ["PUT", "DELETE"]:
+            self.permission_classes = [IsAuthenticated, IsOwnerOrAdmin]
+        else:
+            self.permission_classes = [IsAuthenticated]
+        return super().get_permissions()
