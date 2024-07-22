@@ -17,6 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
             "bio",
             "image",
             "start_date",
+            "last_login",
         ]
 
     def get_is_admin(self, obj):
