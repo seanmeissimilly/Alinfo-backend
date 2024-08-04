@@ -64,6 +64,29 @@ def putUser(request):
     return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
 
 
+# todo:Update Solo
+@api_view(["PUT"])
+# !:Reviso si está autentificado.
+@permission_classes([IsAuthenticated])
+def putUserSolo(request, pk):
+    try:
+        user = User.objects.get(id=pk)
+    except User.DoesNotExist:
+        return Response(
+            {"Error": "usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND
+        )
+    serializer = UserSerializerWithToken(user, many=False)
+    data = request.data
+    user.user_name = data["user_name"]
+    user.bio = data["bio"]
+    user.email = data["email"]
+    user.role = data["role"]
+    if data["password"] != "":
+        user.password = make_password(data["password"])
+    user.save()
+    return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+
+
 # todo:update profile image user
 @api_view(["POST"])
 # !: Reviso si está autentificado.
