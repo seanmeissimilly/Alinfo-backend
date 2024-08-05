@@ -37,7 +37,6 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-    #  "drf_yasg",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -135,16 +134,6 @@ TEMPLATES = [
 WSGI_APPLICATION = "backend.wsgi.application"
 
 
-# Database Sqllite3
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
-
 # Base de datos Postgresql
 DATABASES = {
     "default": {
@@ -187,7 +176,7 @@ LANGUAGES = [
 ]
 
 # Configuración de idioma español
-LANGUAGE_CODE = "es"  # Idioma predeterminado
+LANGUAGE_CODE = "es-es"  # Idioma predeterminado
 
 # Configuración de zona horaria para América del Este (-5)
 TIME_ZONE = "America/New_York"

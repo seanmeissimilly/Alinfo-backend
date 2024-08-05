@@ -1,13 +1,14 @@
-from rest_framework import serializers
+from rest_framework import serializers, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password
-from rest_framework import status
-from .permissions import IsAdmin, IsEditor, IsReader
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.views import APIView
 from .models import User
+from .permissions import IsAdmin, IsEditor, IsReader
 from .serializers import UserSerializer, UserSerializerWithToken
 
 
@@ -20,6 +21,10 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         for token, user in serializers.items():
             data[token] = user
+
+        refresh = self.get_token(self.user)
+        if refresh.access_token.is_expired:
+            data["message"] = "El token ha caducado. Vuelve a iniciar sesión."
 
         return data
 
@@ -153,3 +158,11 @@ def deleteUser(request, pk):
         return Response("Usuario Eliminado", status=status.HTTP_200_OK)
     else:
         return Response({"Error": "No autorizado"}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+# todo:Logout
+class BlacklistRefreshView(APIView):
+    def post(self, request):
+        token = RefreshToken(request.data.get("refresh"))
+        token.blacklist()
+        return Response("Éxito", status=status.HTTP_200_OK)
