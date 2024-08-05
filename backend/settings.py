@@ -170,13 +170,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
 
-LANGUAGES = [
-    ("es", ("Spanish")),
-    ("en", ("English")),
-]
-
 # Configuración de idioma español
 LANGUAGE_CODE = "es-es"  # Idioma predeterminado
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
+
+LANGUAGES = [
+    ("es", "Spanish"),
+]
 
 # Configuración de zona horaria para América del Este (-5)
 TIME_ZONE = "America/New_York"

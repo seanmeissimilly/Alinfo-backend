@@ -22,11 +22,11 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         for token, user in serializers.items():
             data[token] = user
 
-        refresh = RefreshToken.for_user(self.user)
-        try:
-            refresh.access_token.check_exp()
-        except TokenError:
-            data["message"] = "El token ha caducado. Vuelve a iniciar sesión."
+        # refresh = RefreshToken.for_user(self.user)
+        # try:
+        #     refresh.access_token.check_exp()
+        # except TokenError:
+        #     data["message"] = "El token ha caducado. Vuelve a iniciar sesión."
 
         return data
 
