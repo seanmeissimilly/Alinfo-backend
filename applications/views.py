@@ -5,6 +5,7 @@ from .models import Application, Applicationclassification
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from users.permissions import IsAdmin, IsAdminOrIsEditorAndOwner, IsEditor
+from django.utils.translation import gettext as _
 
 
 # Solo si el usuario está autenticado.

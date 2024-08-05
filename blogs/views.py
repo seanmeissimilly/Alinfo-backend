@@ -8,6 +8,7 @@ from .models import Blog, Comment
 from users.models import User
 from users.permissions import IsAdmin, IsEditor, IsOwnerOrAdmin
 from rest_framework import viewsets
+from django.utils.translation import gettext as _
 
 
 @api_view(["GET"])

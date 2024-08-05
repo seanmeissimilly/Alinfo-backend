@@ -75,7 +75,7 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     # tiempo de duración del token.
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=45),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": False,
@@ -172,12 +172,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Configuración de idioma español
 LANGUAGE_CODE = "es-es"  # Idioma predeterminado
-USE_I18N = True
-USE_L10N = True
-USE_TZ = True
+
 
 LANGUAGES = [
     ("es", "Spanish"),
+    ("en", "English"),
 ]
 
 # Configuración de zona horaria para América del Este (-5)
@@ -185,6 +184,7 @@ TIME_ZONE = "America/New_York"
 
 # Configuración de uso de traducciones
 USE_I18N = True
+USE_L10N = True
 
 # Configuración de uso de zona horaria
 USE_TZ = True

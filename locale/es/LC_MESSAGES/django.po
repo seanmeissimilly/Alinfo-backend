@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 13:24-0500\n"
+"POT-Creation-Date: 2024-08-05 00:10-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,21 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: .\users\models.py:15
 msgid "Debes proporcionar una dirección de correo electrónico"
 msgstr ""
 
-#: .\users\models.py:39
+#: .\users\models.py:49
 msgid "email address"
-msgstr ""
+msgstr "dirección de correo electrónico"
 
-#: .\users\models.py:43
+#: .\users\models.py:51
 msgid "bio"
-msgstr ""
+msgstr "biografía"
+
+#~ msgid "Token has expired. Please log in again."
+#~ msgstr "El token ha caducado. Vuelve a iniciar sesión."
+
+#~ msgid "Given token not valid for any token type"
+#~ msgstr "El token ha caducado. Vuelve a iniciar sesión."

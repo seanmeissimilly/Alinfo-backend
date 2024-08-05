@@ -9,6 +9,7 @@ from .models import Document, Documentclassification, Documenttypes
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from users.permissions import IsAdmin, IsEditor, IsAdminOrIsEditorAndOwner
+from django.utils.translation import gettext as _
 
 
 class DocumenttypesView(viewsets.ModelViewSet):

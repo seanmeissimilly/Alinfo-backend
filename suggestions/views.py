@@ -5,6 +5,7 @@ from .models import Suggestion
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from users.permissions import IsOwnerOrAdmin
+from django.utils.translation import gettext as _
 
 
 # Solo si el usuario está autenticado.

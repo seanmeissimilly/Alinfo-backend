@@ -5,6 +5,7 @@ from .models import Multimedia, Multimediaclassification
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from users.permissions import IsAdmin, IsAdminOrIsEditorAndOwner, IsEditor
+from django.utils.translation import gettext as _
 
 
 # Solo si el usuario está autenticado.
