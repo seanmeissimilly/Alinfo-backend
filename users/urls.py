@@ -13,5 +13,5 @@ urlpatterns = [
     path("<int:pk>/", views.getSoloUser),
     path("getUsers/", views.getUsers),
     path("delete/<int:pk>/", views.deleteUser),
-    path("logout/", views.BlacklistRefreshView.as_view(), name="logout"),
+    # path("logout/", views.BlacklistRefreshView.as_view(), name="logout"),
 ]

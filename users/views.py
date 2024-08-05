@@ -6,10 +6,10 @@ from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.views import APIView
 from .models import User
-from .permissions import IsAdmin, IsEditor, IsReader
+from .permissions import IsAdmin
 from .serializers import UserSerializer, UserSerializerWithToken
+from rest_framework_simplejwt.exceptions import TokenError
 
 
 # todo:Login
@@ -22,8 +22,10 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         for token, user in serializers.items():
             data[token] = user
 
-        refresh = self.get_token(self.user)
-        if refresh.access_token.is_expired:
+        refresh = RefreshToken.for_user(self.user)
+        try:
+            refresh.access_token.check_exp()
+        except TokenError:
             data["message"] = "El token ha caducado. Vuelve a iniciar sesión."
 
         return data
@@ -160,9 +162,9 @@ def deleteUser(request, pk):
         return Response({"Error": "No autorizado"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
-# todo:Logout
-class BlacklistRefreshView(APIView):
-    def post(self, request):
-        token = RefreshToken(request.data.get("refresh"))
-        token.blacklist()
-        return Response("Éxito", status=status.HTTP_200_OK)
+# # todo:Logout
+# class BlacklistRefreshView(APIView):
+#     def post(self, request):
+#         token = RefreshToken(request.data.get("refresh"))
+#         token.blacklist()
+#         return Response("Éxito", status=status.HTTP_200_OK)
