@@ -32,11 +32,11 @@ class MyTokenObtainPairView(TokenObtainPairView):
 def check_user_exists(data):
     if User.objects.filter(email=data["email"]).exists():
         return {
-            "Error": _("El correo electrónico ya está registrado")
+            "error": _("El correo electrónico ya está registrado")
         }, status.HTTP_409_CONFLICT
     if User.objects.filter(user_name=data["user_name"]).exists():
         return {
-            "Error": _("El nombre de usuario ya está registrado")
+            "error": _("El nombre de usuario ya está registrado")
         }, status.HTTP_409_CONFLICT
     return None, None
 
@@ -58,7 +58,7 @@ def register(request):
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     except Exception as e:
-        message = {"Error": _("Algo salió mal: ") + str(e)}
+        message = {"error": _("Algo salió mal: ") + str(e)}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -84,7 +84,7 @@ def putUser(request):
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
     except Exception as e:
-        message = {"Error": _("Algo salió mal: ") + str(e)}
+        message = {"error": _("Algo salió mal: ") + str(e)}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -97,7 +97,7 @@ def putUserSolo(request, pk):
         user = User.objects.get(id=pk)
     except User.DoesNotExist:
         return Response(
-            {"Error": _("Usuario no encontrado")}, status=status.HTTP_404_NOT_FOUND
+            {"error": _("Usuario no encontrado")}, status=status.HTTP_404_NOT_FOUND
         )
 
     data = request.data
@@ -116,7 +116,7 @@ def putUserSolo(request, pk):
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
     except Exception as e:
-        message = {"Error": _("Algo salió mal: ") + str(e)}
+        message = {"error": _("Algo salió mal: ") + str(e)}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -152,7 +152,7 @@ def getSoloUser(request, pk):
         user = User.objects.get(id=pk)
     except User.DoesNotExist:
         return Response(
-            {"Error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND
+            {"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND
         )
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data, status=status.HTTP_200_OK)
@@ -177,7 +177,7 @@ def deleteUser(request, pk):
         user_delete = User.objects.get(id=pk)
     except User.DoesNotExist:
         return Response(
-            {"Error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND
+            {"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND
         )
     user = request.user
     # !: Reviso que el usuario que hizo la petición tenga el rol de admin.
@@ -185,7 +185,7 @@ def deleteUser(request, pk):
         user_delete.delete()
         return Response("Usuario Eliminado", status=status.HTTP_200_OK)
     else:
-        return Response({"Error": "No autorizado"}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response({"error": "No autorizado"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 # # todo:Logout
