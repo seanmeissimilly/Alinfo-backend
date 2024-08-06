@@ -30,8 +30,10 @@ msgstr "dirección de correo electrónico"
 msgid "bio"
 msgstr "biografía"
 
-#~ msgid "Token has expired. Please log in again."
-#~ msgstr "El token ha caducado. Vuelve a iniciar sesión."
+#: .\users\views.py
+msgid "Token has expired. Please log in again."
+msgstr "El token ha caducado. Vuelve a iniciar sesión."
 
-#~ msgid "Given token not valid for any token type"
-#~ msgstr "El token ha caducado. Vuelve a iniciar sesión."
+#: .\users\views.py
+msgid "Given token not valid for any token type"
+msgstr "El token ha caducado. Vuelve a iniciar sesión."

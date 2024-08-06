@@ -32,11 +32,11 @@ class MyTokenObtainPairView(TokenObtainPairView):
 def check_user_exists(data):
     if User.objects.filter(email=data["email"]).exists():
         return {
-            "error": _("El correo electrónico ya está registrado")
+            "error": _("Ya existe una cuenta con este correo electrónico.")
         }, status.HTTP_409_CONFLICT
     if User.objects.filter(user_name=data["user_name"]).exists():
         return {
-            "error": _("El nombre de usuario ya está registrado")
+            "error": _("Ya existe una cuenta con este nombre de usuario.")
         }, status.HTTP_409_CONFLICT
     return None, None
 

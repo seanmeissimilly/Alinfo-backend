@@ -172,19 +172,17 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Configuración de idioma español
 LANGUAGE_CODE = "es-es"  # Idioma predeterminado
-
-
-LANGUAGES = [
+LANGUAGES = (
     ("es", "Spanish"),
     ("en", "English"),
-]
+)
 
 # Configuración de zona horaria para América del Este (-5)
 TIME_ZONE = "America/New_York"
 
 # Configuración de uso de traducciones
-USE_I18N = True
-USE_L10N = True
+USE_I18N = True  # use internationalization
+USE_L10N = True  # use localization
 
 # Configuración de uso de zona horaria
 USE_TZ = True
