@@ -28,12 +28,28 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 
+# todo : Función para chequear que un username o un correo ya están tomados.
+def check_user_exists(data):
+    if User.objects.filter(email=data["email"]).exists():
+        return {
+            "Error": _("El correo electrónico ya está registrado")
+        }, status.HTTP_409_CONFLICT
+    if User.objects.filter(user_name=data["user_name"]).exists():
+        return {
+            "Error": _("El nombre de usuario ya está registrado")
+        }, status.HTTP_409_CONFLICT
+    return None, None
+
+
 # todo:Register
 @api_view(["POST"])
 def register(request):
     data = request.data
-
     try:
+        error_message, error_status = check_user_exists(data)
+        if error_message:
+            return Response(error_message, status=error_status)
+
         user = User.objects.create(
             user_name=data["user_name"],
             email=data["email"],
@@ -41,8 +57,8 @@ def register(request):
         )
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    except:
-        message = {"detalles": "Algo salió mal"}
+    except Exception as e:
+        message = {"Error": _("Algo salió mal: ") + str(e)}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -52,16 +68,24 @@ def register(request):
 @permission_classes([IsAuthenticated])
 def putUser(request):
     user = request.user
-    serializer = UserSerializerWithToken(user, many=False)
     data = request.data
-    user.user_name = data["user_name"]
-    user.bio = data["bio"]
-    user.email = data["email"]
-    user.role = data["role"]
-    if data["password"] != "":
-        user.password = make_password(data["password"])
-    user.save()
-    return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+    try:
+        error_message, error_status = check_user_exists(data)
+        if error_message:
+            return Response(error_message, status=error_status)
+
+        user.user_name = data["user_name"]
+        user.bio = data["bio"]
+        user.email = data["email"]
+        user.role = data["role"]
+        if data["password"]:
+            user.password = make_password(data["password"])
+        user.save()
+        serializer = UserSerializerWithToken(user, many=False)
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+    except Exception as e:
+        message = {"Error": _("Algo salió mal: ") + str(e)}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
 # todo:Update Solo
@@ -73,18 +97,27 @@ def putUserSolo(request, pk):
         user = User.objects.get(id=pk)
     except User.DoesNotExist:
         return Response(
-            {"Error": "usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND
+            {"Error": _("Usuario no encontrado")}, status=status.HTTP_404_NOT_FOUND
         )
-    serializer = UserSerializerWithToken(user, many=False)
+
     data = request.data
-    user.user_name = data["user_name"]
-    user.bio = data["bio"]
-    user.email = data["email"]
-    user.role = data["role"]
-    if data["password"] != "":
-        user.password = make_password(data["password"])
-    user.save()
-    return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+    try:
+        error_message, error_status = check_user_exists(data)
+        if error_message:
+            return Response(error_message, status=error_status)
+
+        user.user_name = data["user_name"]
+        user.bio = data["bio"]
+        user.email = data["email"]
+        user.role = data["role"]
+        if data["password"]:
+            user.password = make_password(data["password"])
+        user.save()
+        serializer = UserSerializerWithToken(user, many=False)
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+    except Exception as e:
+        message = {"Error": _("Algo salió mal: ") + str(e)}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
 # todo:update profile image user
