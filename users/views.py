@@ -70,9 +70,6 @@ def putUser(request):
     user = request.user
     data = request.data
     try:
-        error_message, error_status = check_user_exists(data)
-        if error_message:
-            return Response(error_message, status=error_status)
 
         user.user_name = data["user_name"]
         user.bio = data["bio"]
@@ -102,9 +99,6 @@ def putUserSolo(request, pk):
 
     data = request.data
     try:
-        error_message, error_status = check_user_exists(data)
-        if error_message:
-            return Response(error_message, status=error_status)
 
         user.user_name = data["user_name"]
         user.bio = data["bio"]
