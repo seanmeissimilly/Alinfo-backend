@@ -10,6 +10,9 @@ from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from users.permissions import IsAdmin, IsEditor, IsAdminOrIsEditorAndOwner
 from django.utils.translation import gettext as _
+from rest_framework.response import Response
+from rest_framework import status
+import os
 
 
 class DocumenttypesView(viewsets.ModelViewSet):
@@ -52,3 +55,17 @@ class DocumentView(viewsets.ModelViewSet):
         else:
             self.permission_classes = [IsAuthenticated]
         return super().get_permissions()
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        file_path = instance.data.path
+        response = super().destroy(request, *args, **kwargs)
+        if os.path.exists(file_path):
+            try:
+                os.remove(file_path)
+            except Exception as e:
+                message = {
+                    "error": _("Algo salió mal al eliminar el archivo: ") + str(e)
+                }
+                return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        return response
