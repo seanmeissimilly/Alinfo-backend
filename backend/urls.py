@@ -3,10 +3,17 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.documentation import include_docs_urls
-from rest_framework import permissions
+from django.shortcuts import redirect
+
+
+# Defino una función para la redirección
+def redirect_to_docs(request):
+    return redirect("docs/", permanent=True)
+
 
 urlpatterns = [
     # Establezco las rutas de la API
+    path("", redirect_to_docs),
     path("admin/", admin.site.urls),
     path("users/", include("users.urls")),
     path("blogs/", include("blogs.urls")),
