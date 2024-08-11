@@ -57,10 +57,11 @@ INSTALLED_APPS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
+    # para el server de producción
+    "http://localhost:4173",
+    # para el server de desarrollo
     "http://localhost:5173",
-    "http://127.0.0.1:5173",
+    # para la aplicación Android
     "http://10.0.2.2:8000",
 ]
 
