@@ -25,7 +25,7 @@ class Blog(models.Model):
 class Comment(models.Model):
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    text = models.CharField(max_length=300)
+    text = models.CharField(max_length=500)
     date = models.DateTimeField(auto_now_add=True)
     REQUIRED_FIELDS = ["blog", "text"]
 
