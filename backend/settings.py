@@ -45,8 +45,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_cleanup.apps.CleanupConfig",
     "rest_framework",
-    "corsheaders",
-    "coreapi",
+    "corsheaders",    
     "blogs",
     "users",
     "applications",
@@ -54,6 +53,7 @@ INSTALLED_APPS = [
     "multimedia",
     "suggestions",
     "rest_framework_simplejwt.token_blacklist",
+    "drf_spectacular",  
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -65,15 +65,50 @@ CORS_ALLOWED_ORIGINS = [
     "http://10.0.2.2:8000",
 ]
 
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Alinfo API',
+    'DESCRIPTION': 'API-Repositorio Virtual de Ingeniería Alimentaria',
+    'VERSION': '2.1.0',    
+    'CONTACT': [
+        {
+            'name': 'Sean Meissimilly',
+            'email': 'seanmeissimilly@gmail.com',
+        },
+        {
+            'name': 'Javier Correa Medina',
+            'email': 'javiercorrea@gmail.com',
+        },
+    ],
+    'LICENSE': {
+        'name': 'MIT License',
+        'url': 'https://opensource.org/licenses/MIT',
+    },
+}
+
+
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ),
-    "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
-    # "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    # "PAGE_SIZE": 10,
+    ),   
+      "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+     
 }
+
+# REST_FRAMEWORK = {
+#     "DEFAULT_AUTHENTICATION_CLASSES": (
+#         "rest_framework_simplejwt.authentication.JWTAuthentication",
+#     ),
+#     #Para usar coreapi de esquema de documentación.
+#      #"DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema", 
+#       #Para usar openapi de esquema de documentación.
+#     #  'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.openapi.AutoSchema',
+#      #Para usar drf_spectacular de esquema de documentación.
+#       'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+#      #Para usar paginación
+#     # "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+#     # "PAGE_SIZE": 10,
+# }
 
 
 SIMPLE_JWT = {

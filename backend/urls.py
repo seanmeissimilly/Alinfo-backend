@@ -2,8 +2,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from rest_framework.documentation import include_docs_urls
 from django.shortcuts import redirect
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 
 # Defino una función para la redirección
@@ -21,8 +21,12 @@ urlpatterns = [
     path("documents/", include("documents.urls")),
     path("multimedia/", include("multimedia.urls")),
     path("suggestions/", include("suggestions.urls")),
-    # Para hacer la documentacion de la Api
-    path("docs/", include_docs_urls(title="Alinfo API")),
+    # Para hacer la documentacion de la Api    
+    path('docs/schema/', SpectacularAPIView.as_view(), name='docs'),
+    path('docs/swagger-ui/', SpectacularSwaggerView.as_view(url_name='docs'), name='swagger-ui'),
+    path('docs/', SpectacularRedocView.as_view(url_name='docs'), name='redoc'),
+    
+    
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
