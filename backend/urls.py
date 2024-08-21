@@ -6,22 +6,24 @@ from django.shortcuts import redirect
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 
-# Defino una función para la redirección
+# Función para la redirección a la documentación
 def redirect_to_docs(request):
     return redirect("docs/", permanent=True)
 
-
+# Rutas principales del proyecto
 urlpatterns = [
-    # Establezco las rutas de la API
+    # Redirección a la documentación
     path("", redirect_to_docs),
+    # Rutas del administrador
     path("admin/", admin.site.urls),
+     # Rutas de las aplicaciones
     path("users/", include("users.urls")),
     path("blogs/", include("blogs.urls")),
     path("applications/", include("applications.urls")),
     path("documents/", include("documents.urls")),
     path("multimedia/", include("multimedia.urls")),
     path("suggestions/", include("suggestions.urls")),
-    # Para hacer la documentacion de la Api    
+    # Rutas para la documentación de la API  
     path('docs/schema/', SpectacularAPIView.as_view(), name='docs'),
     path('docs/swagger-ui/', SpectacularSwaggerView.as_view(url_name='docs'), name='swagger-ui'),
     path('docs/', SpectacularRedocView.as_view(url_name='docs'), name='redoc'),
@@ -29,4 +31,5 @@ urlpatterns = [
     
 ]
 
+# Añadir rutas para servir archivos estáticos en desarrollo
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
