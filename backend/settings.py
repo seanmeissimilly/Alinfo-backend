@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_cleanup.apps.CleanupConfig",
     "rest_framework",
-    "corsheaders",    
+    "corsheaders",
     "blogs",
     "users",
     "applications",
@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     "multimedia",
     "suggestions",
     "rest_framework_simplejwt.token_blacklist",
-    "drf_spectacular",  
+    "drf_spectacular",
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -66,33 +66,31 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Alinfo API',
-    'DESCRIPTION': 'API-Repositorio Virtual de Ingeniería Alimentaria',
-    'VERSION': '2.1.0',    
-    'CONTACT': [
+    "TITLE": "Alinfo API",
+    "DESCRIPTION": "API-Repositorio Virtual de Ingeniería Alimentaria",
+    "VERSION": "2.1.0",
+    "CONTACT": [
         {
-            'name': 'Sean Meissimilly',
-            'email': 'seanmeissimilly@gmail.com',
+            "name": "Sean Meissimilly",
+            "email": "seanmeissimilly@gmail.com",
         },
         {
-            'name': 'Javier Correa Medina',
-            'email': 'javiercorrea@gmail.com',
+            "name": "Javier Correa Medina",
+            "email": "javiercorrea@gmail.com",
         },
     ],
-    'LICENSE': {
-        'name': 'MIT License',
-        'url': 'https://opensource.org/licenses/MIT',
+    "LICENSE": {
+        "name": "MIT License",
+        "url": "https://opensource.org/licenses/MIT",
     },
 }
-
 
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ),   
-      "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-     
+    ),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 # REST_FRAMEWORK = {
@@ -100,7 +98,7 @@ REST_FRAMEWORK = {
 #         "rest_framework_simplejwt.authentication.JWTAuthentication",
 #     ),
 #     #Para usar coreapi de esquema de documentación.
-#      #"DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema", 
+#      #"DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
 #       #Para usar openapi de esquema de documentación.
 #     #  'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.openapi.AutoSchema',
 #      #Para usar drf_spectacular de esquema de documentación.
@@ -113,12 +111,12 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     # tiempo de duración del token.
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=45),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
-    "ROTATE_REFRESH_TOKENS": False,
-    "BLACKLIST_AFTER_ROTATION": False,
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": True,
-    "ALGORITHM": "HS256",
+    "ALGORITHM": "HS512",
     "SIGNING_KEY": SECRET_KEY,
     "VERIFYING_KEY": None,
     "AUDIENCE": None,
