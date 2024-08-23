@@ -31,4 +31,5 @@ class Comment(models.Model):
 
     # Para que se muestre en el modulo de administración
     def __str__(self):
-        return self.text
+        formatted_date = self.date.strftime("%d/%m/%Y")
+        return f"Comentario por {self.user.user_name} el {formatted_date}"

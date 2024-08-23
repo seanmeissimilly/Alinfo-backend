@@ -13,4 +13,5 @@ class Suggestion(models.Model):
 
     # Para que se muestre en el modulo de administración
     def __str__(self):
-        return f"Sugerencia por {self.user.user_name} el {self.date}"
+        formatted_date = self.date.strftime("%d/%m/%Y")
+        return f"Sugerencia por {self.user.user_name} el {formatted_date}"
