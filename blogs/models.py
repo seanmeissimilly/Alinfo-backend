@@ -12,7 +12,7 @@ class Blog(models.Model):
         null=True,
         blank=True,
         upload_to="blog_picture/",
-        default="/blog_picture/noticia.jpg",
+        default="blog_picture/noticia.jpg",
     )
     REQUIRED_FIELDS = ["title", "body"]
 

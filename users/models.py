@@ -53,7 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     image = models.ImageField(
         null=True,
         blank=True,
-        default="/profile_picture/Isotipo.png",
+        default="profile_picture/Isotipo.png",
         upload_to="profile_picture/",
     )
     is_staff = models.BooleanField(default=False)

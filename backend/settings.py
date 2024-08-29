@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 import os
 from datetime import timedelta
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,11 +28,7 @@ SECRET_KEY = "django-insecure-7hrts==e^r+b5f5k2v)473e6+@vw352^)6xl@t=c3!ek714uk=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-    "10.0.2.2",
-]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -45,6 +42,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_cleanup.apps.CleanupConfig",
     "rest_framework",
+    "rest_framework_simplejwt.token_blacklist",
+    "drf_spectacular",
     "corsheaders",
     "blogs",
     "users",
@@ -52,8 +51,6 @@ INSTALLED_APPS = [
     "documents",
     "multimedia",
     "suggestions",
-    "rest_framework_simplejwt.token_blacklist",
-    "drf_spectacular",
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -170,15 +167,15 @@ TEMPLATES = [
 WSGI_APPLICATION = "backend.wsgi.application"
 
 
-# Base de datos Postgresql
+# Base de datos
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "alinfo",
-        "USER": "postgres",
-        "PASSWORD": "Contra12345*",
-        "HOST": "localhost",
-        "PORT": "5432",
+        "ENGINE": config("DATABASE_ENGINE"),
+        "NAME": config("DATABASE_NAME"),
+        "USER": config("DATABASE_USER"),
+        "PASSWORD": config("DATABASE_PASSWORD"),
+        "HOST": config("DATABASE_HOST"),
+        "PORT": config("DATABASE_PORT"),
     }
 }
 
