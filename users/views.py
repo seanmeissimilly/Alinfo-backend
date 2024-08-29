@@ -55,6 +55,11 @@ def register(request):
             email=data["email"],
             password=make_password(data["password"]),
         )
+        # todo: Verificar si hay una imagen en los datos
+        if "image" in request.FILES:
+            user.image = request.FILES["image"]
+            user.save()
+
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     except Exception as e:
@@ -70,13 +75,15 @@ def putUser(request):
     user = request.user
     data = request.data
     try:
-
         user.user_name = data["user_name"]
         user.bio = data["bio"]
         user.email = data["email"]
         user.role = data["role"]
         if data["password"]:
             user.password = make_password(data["password"])
+        # todo: Verificar si hay una imagen en los datos
+        if "image" in request.FILES:
+            user.image = request.FILES["image"]
         user.save()
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
@@ -114,14 +121,22 @@ def putUserSolo(request, pk):
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
-# todo:update profile image user
+# todo: update profile image user
 @api_view(["POST"])
 # !: Reviso si está autentificado.
 @permission_classes([IsAuthenticated])
 def uploadImage(request):
     data = request.data
     user_id = data["user_id"]
-    user = User.objects.get(id=user_id)
+
+    # todo: Busco el usuario según el id.
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return Response(
+            {"error": _("Usuario no encontrado")}, status=status.HTTP_404_NOT_FOUND
+        )
+
     user.image = request.FILES.get("image")
     user.save()
     return Response("Imagen subida", status=status.HTTP_202_ACCEPTED)
