@@ -66,16 +66,14 @@ SPECTACULAR_SETTINGS = {
     "TITLE": "Alinfo API",
     "DESCRIPTION": "API-Repositorio Virtual de Ingeniería Alimentaria",
     "VERSION": "2.1.0",
-    "CONTACT": [
-        {
-            "name": "Sean Meissimilly",
-            "email": "seanmeissimilly@gmail.com",
-        },
-        {
-            "name": "Javier Correa Medina",
-            "email": "javiercorrea@gmail.com",
-        },
-    ],
+    "CONTACT": {
+        "name": "Sean Meissimilly",
+        "email": "seanmeissimilly@gmail.com",
+    },
+    #     {
+    #         "name": "Javier Correa Medina",
+    #         "email": "javiercorrea@gmail.com",
+    #     },
     "LICENSE": {
         "name": "MIT License",
         "url": "https://opensource.org/licenses/MIT",
