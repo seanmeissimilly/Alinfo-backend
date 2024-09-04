@@ -8,7 +8,6 @@ from .models import Blog, Comment
 from users.permissions import IsAdmin, IsEditor, IsOwnerOrAdmin
 from rest_framework import viewsets
 from django.utils.translation import gettext as _
-from rest_framework.decorators import api_view, permission_classes
 
 
 class BlogListView(APIView):
