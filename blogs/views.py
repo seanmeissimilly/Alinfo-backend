@@ -1,4 +1,5 @@
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.views import APIView
+from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
@@ -7,120 +8,96 @@ from .models import Blog, Comment
 from users.permissions import IsAdmin, IsEditor, IsOwnerOrAdmin
 from rest_framework import viewsets
 from django.utils.translation import gettext as _
+from rest_framework.decorators import api_view, permission_classes
 
 
-@api_view(["GET"])
-#!: Reviso si está autentificado.
-@permission_classes([IsAuthenticated])
-def getBlogs(request):
-    blog = Blog.objects.filter().order_by("-date")
-    serializer = BlogSerializer(blog, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+class BlogListView(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = BlogSerializer
+
+    def get(self, request):
+        blogs = Blog.objects.all().order_by("-date")
+        serializer = self.serializer_class(blogs, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-@api_view(["GET"])
-#!: Reviso si está autentificado.
-@permission_classes([IsAuthenticated])
-def getSoloBlog(request, pk):
-    try:
-        blog = Blog.objects.get(id=pk)
-    except Blog.DoesNotExist:
-        return Response(
-            {"error": _("Blog no encontrado")}, status=status.HTTP_404_NOT_FOUND
-        )
-    serializer = BlogSerializer(blog, many=False)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+class BlogDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = BlogSerializer
+
+    def get(self, request, pk):
+        try:
+            blog = Blog.objects.get(id=pk)
+        except Blog.DoesNotExist:
+            return Response(
+                {"error": "Blog no encontrado"}, status=status.HTTP_404_NOT_FOUND
+            )
+        serializer = self.serializer_class(blog)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-@api_view(["POST"])
-#!: Reviso si está autentificado y si tiene rol de Editor o Administrador.
-@permission_classes([IsAuthenticated & IsAdmin | IsAuthenticated & IsEditor])
-def postBlog(request):
-    data = request.data
-    image_file = request.FILES.get("image")
+class BlogCreateView(generics.CreateAPIView):
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
+    permission_classes = [IsAuthenticated & (IsAdmin | IsEditor)]
 
-    # todo: Creo un diccionario con los datos que siempre se pasan.
-    blog_data = {
-        "user": request.user,
-        "body": data["body"],
-        "title": data["title"],
-    }
-
-    # todo: Si me pasaron alguna imagen, la añado al diccionario.
-    if image_file is not None:
-        blog_data["image"] = image_file
-
-    # todo: Creo el objeto Blog con los datos del diccionario.
-    blog = Blog.objects.create(**blog_data)
-
-    serializer = BlogSerializer(blog, many=False)
-    return Response(serializer.data, status=status.HTTP_201_CREATED)
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
-@api_view(["POST"])
-#!: Reviso si está autentificado.
-@permission_classes([IsAuthenticated & IsAdmin | IsAuthenticated & IsEditor])
-def uploadImage(request, pk):
-    data = request.data
-    user = data["user"]
-    try:
-        blog = Blog.objects.get(id=pk)
-    except Blog.DoesNotExist:
-        return Response(
-            {"error": _("Blog no encontrado")}, status=status.HTTP_404_NOT_FOUND
-        )
-    #!: Reviso que el usuario que hizo el blog sea el mismo que la esté actualizando la foto o que tenga el rol de admin.
-    if blog.user == user or user.role == "admin":
-        blog.image = request.FILES.get("image")
-        blog.save()
-        return Response(_("Imagen subida"))
-    else:
-        return Response({"error": "No autorizado"}, status=status.HTTP_401_UNAUTHORIZED)
+class BlogUpdateView(generics.UpdateAPIView):
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
+    permission_classes = [IsAuthenticated & (IsAdmin | IsEditor)]
 
-
-@api_view(["PUT"])
-# !: Reviso si está autentificado.
-@permission_classes([IsAuthenticated & IsAdmin | IsAuthenticated & IsEditor])
-def putBlog(request, pk):
-    data = request.data
-    try:
-        blog = Blog.objects.get(id=pk)
-    except Blog.DoesNotExist:
-        return Response(
-            {"error": _("Blog no encontrado")}, status=status.HTTP_404_NOT_FOUND
-        )
-    serializer = BlogSerializer(instance=blog, data=data)
-    #!: Reviso que el usuario que hizo el blog sea el mismo que la esté actualizando o que tenga el rol de admin.
-    if blog.user == request.user or request.user.role == "admin":
-        if serializer.is_valid():
+    def perform_update(self, serializer):
+        if (
+            self.get_object().user == self.request.user
+            or self.request.user.role == "admin"
+        ):
             serializer.save()
-    else:
-        return Response(
-            {"error": _("No autorizado")}, status=status.HTTP_401_UNAUTHORIZED
-        )
-    return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+        else:
+            return Response(
+                {"error": "No autorizado"}, status=status.HTTP_401_UNAUTHORIZED
+            )
 
 
-@api_view(["DELETE"])
-#!: Reviso si está autentificado.
-@permission_classes([IsAuthenticated & IsAdmin | IsAuthenticated & IsEditor])
-def deleteBlog(request, pk):
-    # todo Busco el blog según el id.
-    try:
-        blog = Blog.objects.get(id=pk)
-    except Blog.DoesNotExist:
-        return Response(
-            {"error": _("Blog no encontrado")}, status=status.HTTP_404_NOT_FOUND
-        )
+class BlogDeleteView(generics.DestroyAPIView):
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
+    permission_classes = [IsAuthenticated & (IsAdmin | IsEditor)]
 
-    #!: Reviso que el usuario que hizo el blog sea el mismo que la esté borrando o que tenga el rol de admin.
-    if blog.user == request.user or request.user.role == "admin":
-        blog.delete()
-        return Response({"mensaje": _("Publicación Eliminada"), "id": pk})
-    else:
-        return Response(
-            {"error": _("No autorizado")}, status=status.HTTP_401_UNAUTHORIZED
-        )
+    def perform_destroy(self, instance):
+        if instance.user == self.request.user or self.request.user.role == "admin":
+            id = instance.id
+            instance.delete()
+            return Response(
+                {"mensaje": _("Publicación Eliminada"), "id": id},
+                status=status.HTTP_200_OK,
+            )
+        else:
+            return Response(
+                {"error": "No autorizado"}, status=status.HTTP_401_UNAUTHORIZED
+            )
+
+
+class BlogImageView(generics.UpdateAPIView):
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
+    permission_classes = [IsAuthenticated & (IsAdmin | IsEditor)]
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop("partial", False)
+        instance = self.get_object()
+        if instance.user == request.user or request.user.role == "admin":
+            instance.image = request.FILES.get("image")
+            instance.save()
+            serializer = self.get_serializer(instance)
+            return Response(serializer.data)
+        else:
+            return Response(
+                {"error": "No autorizado"}, status=status.HTTP_401_UNAUTHORIZED
+            )
 
 
 class CommentView(viewsets.ModelViewSet):

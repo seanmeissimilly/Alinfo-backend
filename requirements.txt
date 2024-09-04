@@ -1,13 +1,13 @@
 asgiref==3.8.1
 attrs==24.2.0
 build==1.2.1
-certifi==2024.7.4
+certifi==2024.8.30
 charset-normalizer==3.3.2
 click==8.1.7
 colorama==0.4.6
 coreschema==0.0.4
 distlib==0.3.8
-Django==5.1
+Django==5.1.1
 django-cleanup==8.1.0
 django-cors-headers==4.4.0
 django-extensions==3.2.3
