@@ -21,6 +21,13 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         for token, user in serializers.items():
             data[token] = user
 
+        # Capturar la IP del usuario
+        request = self.context.get("request")
+        if request:
+            ip = request.META.get("REMOTE_ADDR")
+            self.user.last_login_ip = ip
+            self.user.save()
+
         return data
 
 
@@ -50,10 +57,17 @@ def register(request):
         if error_message:
             return Response(error_message, status=error_status)
 
+        user_ip = request.META.get("HTTP_X_FORWARDED_FOR")
+        if user_ip:
+            user_ip = user_ip.split(",")[0]
+        else:
+            user_ip = request.META.get("REMOTE_ADDR")
+
         user = User.objects.create(
             user_name=data["user_name"],
             email=data["email"],
             password=make_password(data["password"]),
+            last_login_ip=user_ip,
         )
         # todo: Verificar si hay una imagen en los datos
         if "image" in request.FILES:

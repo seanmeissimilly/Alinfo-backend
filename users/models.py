@@ -6,6 +6,7 @@ from django.contrib.auth.models import (
     PermissionsMixin,
     BaseUserManager,
 )
+from simple_history.models import HistoricalRecords
 
 
 class CustomAccountManager(BaseUserManager):
@@ -61,6 +62,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     # Para los roles, establezco por defecto reader.
     role = models.CharField(max_length=10, choices=ROL_CHOICES, default="reader")
+    last_login_ip = models.GenericIPAddressField(null=True, blank=True)
+    history = HistoricalRecords()
     objects = CustomAccountManager()
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["user_name"]

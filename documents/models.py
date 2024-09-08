@@ -1,10 +1,12 @@
 from django.db import models
 from users.models import User
+from simple_history.models import HistoricalRecords
 
 
 # Creo un nomenclador para clasificar los documentos.
 class Documentclassification(models.Model):
     description = models.CharField(max_length=100, unique=True)
+    history = HistoricalRecords()
 
     # Para que se muestre en el modulo de administración
     def __str__(self):
@@ -14,6 +16,7 @@ class Documentclassification(models.Model):
 # Creo un nomenclador para tipos de documentos.
 class Documenttypes(models.Model):
     description = models.CharField(max_length=100, unique=True)
+    history = HistoricalRecords()
 
     # Para que se muestre en el modulo de administración
     def __str__(self):
@@ -34,6 +37,7 @@ class Document(models.Model):
     documenttypes = models.ForeignKey(
         Documenttypes, on_delete=models.SET_NULL, null=True, blank=True
     )
+    history = HistoricalRecords()
     REQUIRED_FIELDS = ["title"]
 
     # Para que se muestre en el modulo de administración

@@ -18,6 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
             "image",
             "start_date",
             "last_login",
+            "last_login_ip",
         ]
 
     def get_is_admin(self, obj):
@@ -38,6 +39,8 @@ class UserSerializerWithToken(UserSerializer):
             "bio",
             "image",
             "start_date",
+            "last_login",
+            "last_login_ip",
             "token",
         ]
 

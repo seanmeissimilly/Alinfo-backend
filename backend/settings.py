@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt.token_blacklist",
     "drf_spectacular",
     "corsheaders",
+    "simple_history",
     "blogs",
     "users",
     "applications",
@@ -142,6 +143,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.locale.LocaleMiddleware",
+    "simple_history.middleware.HistoryRequestMiddleware",
 ]
 
 ROOT_URLCONF = "backend.urls"
@@ -205,7 +207,7 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = "es-es"  # Idioma predeterminado
 LANGUAGES = (
     ("es", "Spanish"),
-    ("en", "English"),
+    # ("en", "English"),
 )
 
 # Configuración de zona horaria para América del Este (-5)

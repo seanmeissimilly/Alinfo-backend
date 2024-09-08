@@ -1,5 +1,6 @@
 from django.db import models
 from users.models import User
+from simple_history.models import HistoricalRecords
 
 
 # Modelo de Blog
@@ -14,6 +15,7 @@ class Blog(models.Model):
         upload_to="blog_picture/",
         default="blog_picture/noticia.jpg",
     )
+    history = HistoricalRecords()
     REQUIRED_FIELDS = ["title", "body"]
 
     # Para que se muestre en el modulo de administración
@@ -27,6 +29,7 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     text = models.CharField(max_length=500)
     date = models.DateTimeField(auto_now_add=True)
+    history = HistoricalRecords()
     REQUIRED_FIELDS = ["blog", "text"]
 
     # Para que se muestre en el modulo de administración
