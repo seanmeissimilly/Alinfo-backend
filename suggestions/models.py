@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import User
 from simple_history.models import HistoricalRecords
+from auditlog.registry import auditlog
 
 
 # Modelo de Sugerancias
@@ -17,3 +18,6 @@ class Suggestion(models.Model):
     def __str__(self):
         formatted_date = self.date.strftime("%d/%m/%Y")
         return f"Sugerencia por {self.user.user_name} el {formatted_date}"
+
+
+auditlog.register(Suggestion)

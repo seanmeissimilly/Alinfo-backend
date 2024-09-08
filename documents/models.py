@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import User
 from simple_history.models import HistoricalRecords
+from auditlog.registry import auditlog
 
 
 # Creo un nomenclador para clasificar los documentos.
@@ -13,6 +14,9 @@ class Documentclassification(models.Model):
         return self.description
 
 
+auditlog.register(Documentclassification)
+
+
 # Creo un nomenclador para tipos de documentos.
 class Documenttypes(models.Model):
     description = models.CharField(max_length=100, unique=True)
@@ -21,6 +25,9 @@ class Documenttypes(models.Model):
     # Para que se muestre en el modulo de administración
     def __str__(self):
         return self.description
+
+
+auditlog.register(Documenttypes)
 
 
 # Modelo de Documentos
@@ -43,3 +50,6 @@ class Document(models.Model):
     # Para que se muestre en el modulo de administración
     def __str__(self):
         return self.title
+
+
+auditlog.register(Document)

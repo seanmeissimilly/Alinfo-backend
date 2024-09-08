@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import User
 from simple_history.models import HistoricalRecords
+from auditlog.registry import auditlog
 
 
 # Modelo de Blog
@@ -23,6 +24,9 @@ class Blog(models.Model):
         return self.title
 
 
+auditlog.register(Blog)
+
+
 # Modelo de Comentario
 class Comment(models.Model):
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
@@ -36,3 +40,6 @@ class Comment(models.Model):
     def __str__(self):
         formatted_date = self.date.strftime("%d/%m/%Y")
         return f"Comentario por {self.user.user_name} el {formatted_date}"
+
+
+auditlog.register(Comment)

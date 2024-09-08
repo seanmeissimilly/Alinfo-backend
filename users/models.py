@@ -7,6 +7,7 @@ from django.contrib.auth.models import (
     BaseUserManager,
 )
 from simple_history.models import HistoricalRecords
+from auditlog.registry import auditlog
 
 
 class CustomAccountManager(BaseUserManager):
@@ -71,3 +72,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     # Para que se muestre en el modulo de administración
     def __str__(self):
         return self.user_name
+
+
+auditlog.register(User)

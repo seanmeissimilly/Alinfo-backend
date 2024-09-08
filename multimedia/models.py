@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import User
 from simple_history.models import HistoricalRecords
+from auditlog.registry import auditlog
 
 
 # Creo un nomenclador para clasificar lass multimedias.
@@ -11,6 +12,9 @@ class Multimediaclassification(models.Model):
     # Para que se muestre en el modulo de administración
     def __str__(self):
         return self.description
+
+
+auditlog.register(Multimediaclassification)
 
 
 # Modelo de Multimedia
@@ -29,3 +33,6 @@ class Multimedia(models.Model):
     # Para que se muestre en el modulo de administración
     def __str__(self):
         return self.title
+
+
+auditlog.register(Multimedia)

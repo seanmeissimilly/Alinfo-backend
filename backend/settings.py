@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "corsheaders",
     "simple_history",
+    "auditlog",
     "blogs",
     "users",
     "applications",
@@ -144,6 +145,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "simple_history.middleware.HistoryRequestMiddleware",
+    "auditlog.middleware.AuditlogMiddleware",
 ]
 
 ROOT_URLCONF = "backend.urls"
