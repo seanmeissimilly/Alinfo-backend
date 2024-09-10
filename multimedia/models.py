@@ -24,7 +24,7 @@ class Multimedia(models.Model):
     description = models.TextField(max_length=500, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     date = models.DateTimeField(auto_now_add=True)
-    multimediaClassification = models.ForeignKey(
+    multimediaclassification = models.ForeignKey(
         MultimediaClassification, on_delete=models.SET_NULL, null=True, blank=True
     )
     history = HistoricalRecords()

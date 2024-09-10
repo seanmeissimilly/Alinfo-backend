@@ -25,7 +25,7 @@ class Application(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     date = models.DateTimeField(auto_now_add=True)
     data = models.FileField(upload_to="tools/", null=True, blank=True)
-    applicationClassification = models.ForeignKey(
+    applicationclassification = models.ForeignKey(
         ApplicationClassification, on_delete=models.SET_NULL, null=True, blank=True
     )
     history = HistoricalRecords()
