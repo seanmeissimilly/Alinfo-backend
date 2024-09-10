@@ -2,7 +2,7 @@ from django.db import models
 from users.models import User
 from simple_history.models import HistoricalRecords
 from auditlog.registry import auditlog
-
+from django.core.validators import FileExtensionValidator
 
 # Modelo de Blog
 class Blog(models.Model):
@@ -15,6 +15,8 @@ class Blog(models.Model):
         blank=True,
         upload_to="blog_picture/",
         default="blog_picture/noticia.jpg",
+        validators=[FileExtensionValidator(
+            allowed_extensions=['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'webp'])]
     )
     history = HistoricalRecords()
     REQUIRED_FIELDS = ["title", "body"]

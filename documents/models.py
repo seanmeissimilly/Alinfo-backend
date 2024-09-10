@@ -2,6 +2,7 @@ from django.db import models
 from users.models import User
 from simple_history.models import HistoricalRecords
 from auditlog.registry import auditlog
+from django.core.validators import FileExtensionValidator
 
 
 # Creo un nomenclador para clasificar los documentos.
@@ -34,7 +35,12 @@ auditlog.register(DocumentTypes)
 class Document(models.Model):
     title = models.CharField(max_length=200)
     author = models.TextField(max_length=200, blank=True)
-    data = models.FileField(upload_to="documents/", null=True, blank=True)
+    data = models.FileField(
+        upload_to="documents/",
+        null=True,
+        blank=True,
+        validators=[FileExtensionValidator(allowed_extensions=['pdf', 'doc', 'docx', 'xls', 'xlsx', 'txt', 'tex'])]
+    )
     description = models.TextField(max_length=500, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     date = models.DateTimeField(auto_now_add=True)

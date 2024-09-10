@@ -8,6 +8,7 @@ from django.contrib.auth.models import (
 )
 from simple_history.models import HistoricalRecords
 from auditlog.registry import auditlog
+from django.core.validators import FileExtensionValidator
 
 
 class CustomAccountManager(BaseUserManager):
@@ -33,7 +34,8 @@ class CustomAccountManager(BaseUserManager):
         if other_fields.get("is_staff") is not True:
             raise ValueError("Superusuario debe ser asignada a is_staff=True.")
         if other_fields.get("is_superuser") is not True:
-            raise ValueError("Superusuario debe ser asignada a is_superuser=True.")
+            raise ValueError(
+                "Superusuario debe ser asignada a is_superuser=True.")
         return self.create_user(user_name, email, password, **other_fields)
 
 
@@ -57,12 +59,15 @@ class User(AbstractBaseUser, PermissionsMixin):
         blank=True,
         default="profile_picture/Isotipo.png",
         upload_to="profile_picture/",
+        validators=[FileExtensionValidator(
+            allowed_extensions=['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'webp'])]
     )
     is_staff = models.BooleanField(default=False)
     # Para llevar si el usuario está activo.
     is_active = models.BooleanField(default=True)
     # Para los roles, establezco por defecto reader.
-    role = models.CharField(max_length=10, choices=ROL_CHOICES, default="reader")
+    role = models.CharField(
+        max_length=10, choices=ROL_CHOICES, default="reader")
     last_login_ip = models.GenericIPAddressField(null=True, blank=True)
     history = HistoricalRecords()
     objects = CustomAccountManager()
