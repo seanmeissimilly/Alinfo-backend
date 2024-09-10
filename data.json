@@ -1702,6 +1702,28 @@
         }
     },
     {
+        "model": "token_blacklist.outstandingtoken",
+        "pk": 35,
+        "fields": {
+            "user": 1,
+            "jti": "9a4a8739148f4ef09b30bb81c0edff8d",
+            "token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcyNjA5MDg1MywiaWF0IjoxNzI2MDA0NDUzLCJqdGkiOiI5YTRhODczOTE0OGY0ZWYwOWIzMGJiODFjMGVkZmY4ZCIsInVzZXJfaWQiOjF9.HDysR3U1QRsbhOPbg4Y6SbKKgL4ufwCGhutgOC2uvKE_MUiN6Wpk98k577zZrLeYNi6xDWlJgFstfg-L18Tnhg",
+            "created_at": "2024-09-10T21:40:53.675Z",
+            "expires_at": "2024-09-11T21:40:53Z"
+        }
+    },
+    {
+        "model": "token_blacklist.outstandingtoken",
+        "pk": 36,
+        "fields": {
+            "user": 1,
+            "jti": "304dda92a0ad487394a913494a77ce33",
+            "token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcyNjA5MDg1MywiaWF0IjoxNzI2MDA0NDUzLCJqdGkiOiIzMDRkZGE5MmEwYWQ0ODczOTRhOTEzNDk0YTc3Y2UzMyIsInVzZXJfaWQiOjF9.5xo42NM307c7Sb6pUoFG-YVPVnCT0x8DINB498L9ih7XUxUIT0bCmfeSNSDpAAYENG9orhrYfsemAQsHKgDvmw",
+            "created_at": "2024-09-10T21:40:53.830Z",
+            "expires_at": "2024-09-11T21:40:53Z"
+        }
+    },
+    {
         "model": "auditlog.logentry",
         "pk": 1,
         "fields": {
@@ -2382,6 +2404,30 @@
             "cid": null,
             "remote_addr": "127.0.0.1",
             "timestamp": "2024-09-10T19:38:56.793Z",
+            "additional_data": null
+        }
+    },
+    {
+        "model": "auditlog.logentry",
+        "pk": 27,
+        "fields": {
+            "content_type": 13,
+            "object_pk": "1",
+            "object_id": 1,
+            "object_repr": "Tigri",
+            "serialized_data": null,
+            "action": 1,
+            "changes_text": "",
+            "changes": {
+                "last_login": [
+                    "2024-09-10 19:38:56.777332",
+                    "2024-09-10 21:40:53.766676"
+                ]
+            },
+            "actor": null,
+            "cid": null,
+            "remote_addr": "127.0.0.1",
+            "timestamp": "2024-09-10T21:40:53.788Z",
             "additional_data": null
         }
     },
@@ -3331,11 +3377,57 @@
         }
     },
     {
+        "model": "users.historicaluser",
+        "pk": 38,
+        "fields": {
+            "id": 1,
+            "password": "pbkdf2_sha256$870000$DElO27X4b7X9wjzB54Lrvj$03NCX0fbjXSK2UBeo7/w2+rHj7z5due6GcNxsvZNRtQ=",
+            "last_login": "2024-09-10T21:40:53.766Z",
+            "is_superuser": true,
+            "user_name": "Tigri",
+            "email": "sean.meissimilly@nauta.cu",
+            "start_date": "2024-09-10T17:58:08.641Z",
+            "bio": "Soy un estudiante de ingenier\u00eda informatica de 6to a\u00f1o.",
+            "image": "profile_picture/David_perfil.jpg",
+            "is_staff": true,
+            "is_active": true,
+            "role": "admin",
+            "last_login_ip": "127.0.0.1",
+            "history_date": "2024-09-10T21:40:53.799Z",
+            "history_change_reason": null,
+            "history_type": "~",
+            "history_user": null
+        }
+    },
+    {
+        "model": "users.historicaluser",
+        "pk": 39,
+        "fields": {
+            "id": 1,
+            "password": "pbkdf2_sha256$870000$DElO27X4b7X9wjzB54Lrvj$03NCX0fbjXSK2UBeo7/w2+rHj7z5due6GcNxsvZNRtQ=",
+            "last_login": "2024-09-10T21:40:53.766Z",
+            "is_superuser": true,
+            "user_name": "Tigri",
+            "email": "sean.meissimilly@nauta.cu",
+            "start_date": "2024-09-10T17:58:08.641Z",
+            "bio": "Soy un estudiante de ingenier\u00eda informatica de 6to a\u00f1o.",
+            "image": "profile_picture/David_perfil.jpg",
+            "is_staff": true,
+            "is_active": true,
+            "role": "admin",
+            "last_login_ip": "127.0.0.1",
+            "history_date": "2024-09-10T21:40:53.835Z",
+            "history_change_reason": null,
+            "history_type": "~",
+            "history_user": null
+        }
+    },
+    {
         "model": "users.user",
         "pk": 1,
         "fields": {
             "password": "pbkdf2_sha256$870000$DElO27X4b7X9wjzB54Lrvj$03NCX0fbjXSK2UBeo7/w2+rHj7z5due6GcNxsvZNRtQ=",
-            "last_login": "2024-09-10T19:38:56.777Z",
+            "last_login": "2024-09-10T21:40:53.766Z",
             "is_superuser": true,
             "user_name": "Tigri",
             "email": "sean.meissimilly@nauta.cu",
@@ -3468,7 +3560,7 @@
             "user": 1,
             "date": "2024-07-19T22:21:25.155Z",
             "data": "tools/5.exe",
-            "applicationClassification": 3
+            "applicationclassification": 3
         }
     },
     {
@@ -3481,7 +3573,7 @@
             "user": 3,
             "date": "2024-07-19T22:18:53.509Z",
             "data": "tools/Uconeer.exe",
-            "applicationClassification": 2
+            "applicationclassification": 2
         }
     },
     {
@@ -3494,7 +3586,7 @@
             "user": 4,
             "date": "2024-07-19T22:20:16.322Z",
             "data": "tools/Derive_6.1_Portable.exe",
-            "applicationClassification": 1
+            "applicationclassification": 1
         }
     },
     {
@@ -3507,7 +3599,7 @@
             "user": 1,
             "date": "2024-08-12T00:23:14.472Z",
             "data": "tools/winrar-x64-701_Wg7BfDO.exe",
-            "applicationClassification": 4
+            "applicationclassification": 4
         }
     },
     {
@@ -3520,7 +3612,7 @@
             "user": 1,
             "date": "2024-08-19T19:01:11.317Z",
             "data": "tools/14.exe",
-            "applicationClassification": 4
+            "applicationclassification": 4
         }
     },
     {
@@ -3533,7 +3625,7 @@
             "user": 2,
             "date": "2024-07-19T22:22:27.715Z",
             "data": "tools/SteamTab_Tablas_de_vapor.exe",
-            "applicationClassification": 2
+            "applicationclassification": 2
         }
     },
     {
@@ -3616,8 +3708,8 @@
             "description": "Para el ingeniero qu\u00edmico resulta imprescindible estimar las propiedades de transporte, enti\u00e9ndase la viscosidad, la conductividad t\u00e9rmica y la difusividad de mezclas, de la forma m\u00e1s precisa posible...",
             "user": 4,
             "date": "2024-07-19T22:10:26.660Z",
-            "documentClassification": 6,
-            "documentTypes": 1
+            "documentclassification": 6,
+            "documenttypes": 1
         }
     },
     {
@@ -3630,8 +3722,8 @@
             "description": "En este trabajo se lleva a cabo un estudio de las causas que est\u00e1n incidiendo en las continuas y cuantiosas devoluciones que se producen en la f\u00e1brica de cerveza \u201cGuido P\u00e9rez Vald\u00e9s\u201d; el estudio a fondo ser\u00e1 dedicado al proceso de pasteurizaci\u00f3n de la cerveza, sin dejar de tratar el proceso completo de elaboraci\u00f3n del producto.",
             "user": 3,
             "date": "2024-07-19T22:09:16.376Z",
-            "documentClassification": 1,
-            "documentTypes": 2
+            "documentclassification": 1,
+            "documenttypes": 2
         }
     },
     {
@@ -3644,8 +3736,8 @@
             "description": "En el an\u00e1lisis de las potencialidades de la industria alimentaria cubana se ha descartado la falta de nuevas alternativas en la variedad de aromas, por lo cual se pretende promover una nueva posibilidad, esta consiste en producir aceite esencial microencapsulado mediante secado por atomizaci\u00f3n. Por lo tanto la presente tesis tuvo como objetivo general evaluar la factibilidad t\u00e9cnico-econ\u00f3mica de la producci\u00f3n en el pa\u00eds de aceite esencial de mandarina microencapsulado.",
             "user": 3,
             "date": "2024-07-19T22:07:44.430Z",
-            "documentClassification": 3,
-            "documentTypes": 2
+            "documentclassification": 3,
+            "documenttypes": 2
         }
     },
     {
@@ -3658,8 +3750,8 @@
             "description": "Los carotenoides son importantes fitoqu\u00edmicos que se consideran responsables de efectos protectores de la salud de las frutas y verduras. Constituyen un grupo de cerca de 600 pigmentos liposolubles responsables de los colores amarillos, naranjas y rojos de las frutas y vegetales. En los \u00faltimos a\u00f1os los carotenoides han estado sujetos a un creciente inter\u00e9s debido a sus potenciales efectos sobre la salud humana.",
             "user": 3,
             "date": "2024-07-19T21:48:40.714Z",
-            "documentClassification": 4,
-            "documentTypes": 2
+            "documentclassification": 4,
+            "documenttypes": 2
         }
     },
     {
@@ -3672,8 +3764,8 @@
             "description": "La presente investigaci\u00f3n tiene como objetivo determinar las p\u00e9rdidas de peso y calidad real de bandas de cerdo, res y jam\u00f3n visking durante su almacenamiento en fr\u00edo.",
             "user": 2,
             "date": "2024-07-19T21:33:13.736Z",
-            "documentClassification": 2,
-            "documentTypes": 3
+            "documentclassification": 2,
+            "documenttypes": 3
         }
     },
     {
@@ -3686,8 +3778,8 @@
             "description": "En este trabajo se realiza la evaluaci\u00f3n de la operaci\u00f3n de homogenizaci\u00f3n, mediante el an\u00e1lisis de los par\u00e1metros de calidad f\u00edsico-qu\u00edmicos y sensoriales...",
             "user": 1,
             "date": "2024-07-19T21:14:28.790Z",
-            "documentClassification": 5,
-            "documentTypes": 1
+            "documentclassification": 5,
+            "documenttypes": 1
         }
     },
     {
@@ -3700,8 +3792,8 @@
             "description": "...",
             "user": 2,
             "date": "2024-07-19T21:27:24.876Z",
-            "documentClassification": 6,
-            "documentTypes": 4
+            "documentclassification": 6,
+            "documenttypes": 4
         }
     },
     {
@@ -3714,8 +3806,8 @@
             "description": "Nuevas Tecnolog\u00edas en la Industria de la Carne, Industria C\u00e1rnica cubana, a\u00f1o 2000, Tendencias en la Industria de la Carne, Estructura de la Carne, Tejido muscular. Estructura macrosc\u00f3pica y microsc\u00f3picas...",
             "user": 1,
             "date": "2024-08-11T18:37:56.775Z",
-            "documentClassification": 2,
-            "documentTypes": 1
+            "documentclassification": 2,
+            "documenttypes": 1
         }
     },
     {
@@ -3728,8 +3820,8 @@
             "description": "Actualmente, m\u00e1s del 50 % de las papas producidas a nivel mundial son consumidas como productos elaborados (congeladas, chips, deshidratadas). La expansi\u00f3n de la industria de alimentos r\u00e1pidos a nivel mundial muestra el potencial de los productos de papa...",
             "user": 2,
             "date": "2024-07-19T21:26:10.447Z",
-            "documentClassification": 4,
-            "documentTypes": 4
+            "documentclassification": 4,
+            "documenttypes": 4
         }
     },
     {
@@ -3742,8 +3834,8 @@
             "description": "El incremento de la eficiencia econ\u00f3mica en los procesos industriales es una tarea de primordial importancia, ya que es la v\u00eda mediante la cual pueden lograrse reducciones significativas en los costos de producci\u00f3n, sin que se requiera un proceso inversionista de grandes proporciones...",
             "user": 1,
             "date": "2024-07-19T21:13:13.282Z",
-            "documentClassification": 5,
-            "documentTypes": 1
+            "documentclassification": 5,
+            "documenttypes": 1
         }
     },
     {
@@ -3756,8 +3848,8 @@
             "description": "El Centro de Referencia de Alcoholes y Bebidas del ICIDCA tiene entre sus objetivos, desarrollar y perfeccionar mediante la I+D tecnolog\u00edas de producci\u00f3n de bebidas destiladas y la obtenci\u00f3n de nuevos productos para ser transferidos a las f\u00e1bricas del MINAZ.",
             "user": 4,
             "date": "2024-07-19T22:13:07.898Z",
-            "documentClassification": 1,
-            "documentTypes": 3
+            "documentclassification": 1,
+            "documenttypes": 3
         }
     },
     {
@@ -3770,8 +3862,8 @@
             "description": "El presente trabajo tiene como objetivo definir a escala de laboratorio las condiciones operacionales m\u00e1s convenientes para la extracci\u00f3n del colorante de bija empleando una...",
             "user": 4,
             "date": "2024-07-19T22:11:29.612Z",
-            "documentClassification": 3,
-            "documentTypes": 3
+            "documentclassification": 3,
+            "documenttypes": 3
         }
     },
     {
@@ -3784,8 +3876,8 @@
             "description": "Uno de los productos alimenticios que m\u00e1s se importa en Cuba es el pollo, con el cual el estado suple en parte las necesidades proteicas de la poblaci\u00f3n y tiene una gran demanda entre nuestros consumidores.",
             "user": 4,
             "date": "2024-07-19T22:15:26.859Z",
-            "documentClassification": 2,
-            "documentTypes": 3
+            "documentclassification": 2,
+            "documenttypes": 3
         }
     },
     {
@@ -3798,8 +3890,8 @@
             "description": "El presente trabajo se desarroll\u00f3 en la Planta de Helados del Complejo L\u00e1cteo de la Habana. Actualmente en esta planta existe un uso no racional de las materias primas y en aras de disminuir este indicador perjudicial para la econom\u00eda se proceder\u00e1 a utilizar un m\u00e9todo de optimizaci\u00f3n que me permita disminuir al m\u00e1ximo el consumo de las materias primas empleadas en este proceso manteniendo la calidad.",
             "user": 1,
             "date": "2024-07-19T21:24:26.569Z",
-            "documentClassification": 5,
-            "documentTypes": 2
+            "documentclassification": 5,
+            "documenttypes": 2
         }
     },
     {
@@ -3812,8 +3904,8 @@
             "description": "Este trabajo se realiz\u00f3 en la planta de soya del Complejo L\u00e1cteo de la Habana, centro en el cual se produce el 80 % del yogur de soya que se consume en...",
             "user": 1,
             "date": "2024-08-19T18:54:32.447Z",
-            "documentClassification": 5,
-            "documentTypes": 2
+            "documentclassification": 5,
+            "documenttypes": 2
         }
     },
     {
@@ -3826,8 +3918,8 @@
             "description": "En el terreno internacional se trabaja desde hace algunos a\u00f1os y de manera reciente en nuestro pa\u00eds en la implantaci\u00f3n de las normas ISO 9000 para la certificaci\u00f3n de sistemas de la calidad en general y en particular primeramente con la NC, ISO/IEC gu\u00eda 25:92 y en la actualidad con la NC, ISO/IEC 17025:00 para la evaluaci\u00f3n de la competencia t\u00e9cnica de los laboratorios de ensayo y calibraci\u00f3n.",
             "user": 1,
             "date": "2024-08-19T18:58:53.984Z",
-            "documentClassification": 6,
-            "documentTypes": 3
+            "documentclassification": 6,
+            "documenttypes": 3
         }
     },
     {
@@ -3881,7 +3973,7 @@
             "description": "La fabricaci\u00f3n de cerveza en una f\u00e1brica comienza con el malteado de la cebada, donde los granos se remojan y se secan para convertir los almidones en az\u00facares fermentables.",
             "user": 1,
             "date": "2024-08-11T18:27:46.646Z",
-            "multimediaClassification": 1
+            "multimediaclassification": 1
         }
     },
     {
@@ -3893,7 +3985,7 @@
             "description": "Sospechas acerca de la peligrosidad de algunos alimentos y aditivos.",
             "user": 1,
             "date": "2024-08-11T18:28:16.931Z",
-            "multimediaClassification": 6
+            "multimediaclassification": 6
         }
     },
     {
@@ -3905,7 +3997,7 @@
             "description": "Da un poco de miedo ver esos resultados despu\u00e9s de s\u00f3lo dos semanas\". Aimee, de 24 a\u00f1os, ha pasado dos semanas siguiendo una dieta de alimentos ultraprocesados como parte de un estudio realizado por cient\u00edficos del King's College de Londres para el programa Panorama de la BBC.\r\n\r\nNancy, su hermana gemela, sigui\u00f3 una dieta que conten\u00eda exactamente la misma cantidad de calor\u00edas, nutrientes, grasas, az\u00facar y fibra. Pero en su caso, ingiriendo solo alimentos frescos o poco procesados.",
             "user": 1,
             "date": "2024-08-13T23:37:25.366Z",
-            "multimediaClassification": 6
+            "multimediaclassification": 6
         }
     },
     {
