@@ -33,8 +33,6 @@ urlpatterns = [
     path("docs/schema/", SpectacularAPIView.as_view(), name="docs"),
     path("docs/", SpectacularSwaggerView.as_view(url_name="docs"), name="swagger-ui"),
     path("docs/redoc/", SpectacularRedocView.as_view(url_name="docs"), name="redoc"),
-    # Rutas para hacer un respaldo de la base de datos.
-    path("admin/backup/", backup_database, name="backup_database"),
 ]
 
 # Añadir rutas para servir archivos estáticos en desarrollo

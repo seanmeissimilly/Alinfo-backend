@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "simple_history",
     "auditlog",
+    "import_export",
     "blogs",
     "users",
     "applications",
