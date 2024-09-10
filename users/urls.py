@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     # Rutas de la aplicación User
-    path("login/", views.MyTokenObtainPairView.as_view()),
+    path("login/", views.MyTokenObtainPairView.as_view(),  name='token_obtain_pair'),
     path("register/", views.register),
     path("put/", views.putUser),
     path("put/<int:pk>/", views.putUserSolo),

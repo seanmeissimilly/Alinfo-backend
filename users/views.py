@@ -11,6 +11,7 @@ from .serializers import UserSerializer, UserSerializerWithToken
 from django.utils.translation import gettext as _
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.views import APIView
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiResponse, OpenApiRequest
 
 # todo:Login
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -161,6 +162,15 @@ def uploadImage(request):
 @api_view(["GET"])
 # !: Reviso si está autentificado.
 @permission_classes([IsAuthenticated])
+@extend_schema(
+    operation_id='user_profile',
+    summary='Obtener perfil del usuario autenticado',
+    description='Este endpoint permite obtener el perfil del usuario autenticado.',
+    responses={
+        200: OpenApiResponse(description='Perfil del usuario autenticado'),
+        400: OpenApiResponse(description='Error en la solicitud')
+    }
+)
 def getUserProfile(request):
     user = request.user
     serializer = UserSerializer(user, many=False)
@@ -184,6 +194,15 @@ def getSoloUser(request, pk):
 
 # todo:List all
 @api_view(["GET"])
+@extend_schema(
+    operation_id='list_users',
+    summary='Listar todos los usuarios',
+    description='Este endpoint permite listar todos los usuarios.',
+    responses={
+        200: OpenApiResponse(description='Lista de usuarios'),
+        400: OpenApiResponse(description='Error en la solicitud')
+    }
+)
 # !: Reviso si está autentificado.
 @permission_classes([IsAuthenticated])
 def getUsers(request):
@@ -196,6 +215,20 @@ def getUsers(request):
 @api_view(["DELETE"])
 # !: Reviso si está autentificado y es tiene rol de Admin.
 @permission_classes([IsAuthenticated & IsAdmin])
+@extend_schema(
+    operation_id='delete_user',
+    summary='Eliminar un usuario',
+    description='Este endpoint permite eliminar un usuario.',
+    parameters=[
+        OpenApiParameter(name='pk', type=int, description='ID del usuario a eliminar', required=True)
+    ],
+    responses={
+        200: OpenApiResponse(description='Usuario eliminado exitosamente'),
+        401: OpenApiResponse(description='No autorizado'),
+        404: OpenApiResponse(description='Usuario no encontrado'),
+        400: OpenApiResponse(description='Error en la solicitud')
+    }
+)
 def deleteUser(request, pk):
     try:
         user_delete = User.objects.get(id=pk)
@@ -214,9 +247,36 @@ def deleteUser(request, pk):
 
 # todo:Logout
 class LogoutView(APIView):
+    @extend_schema(
+        operation_id='user_logout',
+        summary='Logout del usuario',
+        description='Este endpoint permite a un usuario cerrar sesión invalidando su token de refresco.',
+        request=OpenApiRequest(
+            {
+                'application/json': {
+                    'type': 'object',
+                    'properties': {
+                        'refresh': {
+                            'type': 'string',
+                            'description': 'Token de refresco',
+                            'example': 'tu_refresh_token_aqui'
+                        }
+                    },
+                    'required': ['refresh']
+                }
+            }
+        ),
+        responses={
+            205: OpenApiResponse(description='Logout exitoso'),
+            400: OpenApiResponse(description='Error en la solicitud')
+        }
+    )
     def post(self, request):
         try:
-            refresh_token = request.data["refresh"]
+            refresh_token = request.data.get("refresh")
+            if not refresh_token:
+                return Response({"error": "Token de refresco no proporcionado"}, status=status.HTTP_400_BAD_REQUEST)
+            
             token = RefreshToken(refresh_token)
             token.blacklist()
             return Response("Logout exitoso", status=status.HTTP_205_RESET_CONTENT)
