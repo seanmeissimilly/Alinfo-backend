@@ -9,7 +9,8 @@ from .models import User
 from .permissions import IsAdmin
 from .serializers import UserSerializer, UserSerializerWithToken
 from django.utils.translation import gettext as _
-
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.views import APIView
 
 # todo:Login
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -211,9 +212,13 @@ def deleteUser(request, pk):
         return Response({"error": "No autorizado"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
-# # todo:Logout
-# class BlacklistRefreshView(APIView):
-#     def post(self, request):
-#         token = RefreshToken(request.data.get("refresh"))
-#         token.blacklist()
-#         return Response("Éxito", status=status.HTTP_200_OK)
+# todo:Logout
+class LogoutView(APIView):
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response("Logout exitoso", status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response({"error": "Error al cerrar sesión"}, status=status.HTTP_400_BAD_REQUEST)
