@@ -1,7 +1,14 @@
 from django.contrib import admin
-from .models import Multimediaclassification
-from .models import Multimedia
+from import_export.admin import ImportExportModelAdmin
+from .models import Multimedia, MultimediaClassification
+from .resources import MultimediaResource, MultimediaClassificationResource
 from simple_history.admin import SimpleHistoryAdmin
 
-admin.site.register(Multimedia, SimpleHistoryAdmin)
-admin.site.register(Multimediaclassification, SimpleHistoryAdmin)
+@admin.register(Multimedia)
+class MultimediaAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
+    resource_class = MultimediaResource
+
+@admin.register(MultimediaClassification)
+class MultimediaClassificationAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
+    resource_class = MultimediaClassificationResource
+

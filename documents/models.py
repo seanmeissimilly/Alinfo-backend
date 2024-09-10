@@ -5,7 +5,7 @@ from auditlog.registry import auditlog
 
 
 # Creo un nomenclador para clasificar los documentos.
-class Documentclassification(models.Model):
+class DocumentClassification(models.Model):
     description = models.CharField(max_length=100, unique=True)
     history = HistoricalRecords()
 
@@ -14,11 +14,11 @@ class Documentclassification(models.Model):
         return self.description
 
 
-auditlog.register(Documentclassification)
+auditlog.register(DocumentClassification)
 
 
 # Creo un nomenclador para tipos de documentos.
-class Documenttypes(models.Model):
+class DocumentTypes(models.Model):
     description = models.CharField(max_length=100, unique=True)
     history = HistoricalRecords()
 
@@ -27,7 +27,7 @@ class Documenttypes(models.Model):
         return self.description
 
 
-auditlog.register(Documenttypes)
+auditlog.register(DocumentTypes)
 
 
 # Modelo de Documentos
@@ -38,11 +38,11 @@ class Document(models.Model):
     description = models.TextField(max_length=500, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     date = models.DateTimeField(auto_now_add=True)
-    documentclassification = models.ForeignKey(
-        Documentclassification, on_delete=models.SET_NULL, null=True, blank=True
+    documentClassification = models.ForeignKey(
+        DocumentClassification, on_delete=models.SET_NULL, null=True, blank=True
     )
-    documenttypes = models.ForeignKey(
-        Documenttypes, on_delete=models.SET_NULL, null=True, blank=True
+    documentTypes = models.ForeignKey(
+        DocumentTypes, on_delete=models.SET_NULL, null=True, blank=True
     )
     history = HistoricalRecords()
     REQUIRED_FIELDS = ["title"]

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import Document
-from .models import Documentclassification
-from .models import Documenttypes
+from .models import DocumentClassification
+from .models import DocumentTypes
 
 
 class DocumentSerializer(serializers.ModelSerializer):
@@ -12,13 +12,13 @@ class DocumentSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class DocumentclassificationSerializer(serializers.ModelSerializer):
+class DocumentClassificationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Documentclassification
+        model = DocumentClassification
         fields = "__all__"
 
 
-class DocumenttypesSerializer(serializers.ModelSerializer):
+class DocumentTypesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Documenttypes
+        model = DocumentTypes
         fields = "__all__"

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Application, Applicationclassification
+from .models import Application, ApplicationClassification
 
 
 class ApplicationSerializer(serializers.ModelSerializer):
@@ -10,7 +10,7 @@ class ApplicationSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class ApplicationclassificationSerializer(serializers.ModelSerializer):
+class ApplicationClassificationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Applicationclassification
+        model = ApplicationClassification
         fields = "__all__"

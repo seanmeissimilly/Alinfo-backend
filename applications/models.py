@@ -5,7 +5,7 @@ from auditlog.registry import auditlog
 
 
 # Creo un nomenclador para clasificar las Aplicaciones.
-class Applicationclassification(models.Model):
+class ApplicationClassification(models.Model):
     description = models.CharField(max_length=100, unique=True)
     history = HistoricalRecords()
 
@@ -14,7 +14,7 @@ class Applicationclassification(models.Model):
         return self.description
 
 
-auditlog.register(Applicationclassification)
+auditlog.register(ApplicationClassification)
 
 
 # Modelo de Applications
@@ -24,9 +24,9 @@ class Application(models.Model):
     description = models.TextField(max_length=500, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     date = models.DateTimeField(auto_now_add=True)
-    data = models.FileField(upload_to="applicationszip/", null=True, blank=True)
-    applicationclassification = models.ForeignKey(
-        Applicationclassification, on_delete=models.SET_NULL, null=True, blank=True
+    data = models.FileField(upload_to="tools/", null=True, blank=True)
+    applicationClassification = models.ForeignKey(
+        ApplicationClassification, on_delete=models.SET_NULL, null=True, blank=True
     )
     history = HistoricalRecords()
     REQUIRED_FIELDS = ["title"]

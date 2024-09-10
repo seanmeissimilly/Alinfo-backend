@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from .serializers import MultimediaclassificationSerializer, MultimediaSerializer
-from .models import Multimedia, Multimediaclassification
+from .serializers import MultimediaClassificationSerializer, MultimediaSerializer
+from .models import Multimedia, MultimediaClassification
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 from users.permissions import IsAdmin, IsAdminOrIsEditorAndOwner, IsEditor
@@ -49,9 +49,9 @@ class MultimediaView(viewsets.ModelViewSet):
 
 # Solo si el usuario está autenticado.
 @permission_classes([IsAuthenticated])
-class MultimediaclassificationView(viewsets.ModelViewSet):
-    serializer_class = MultimediaclassificationSerializer
-    queryset = Multimediaclassification.objects.all()
+class MultimediaClassificationView(viewsets.ModelViewSet):
+    serializer_class = MultimediaClassificationSerializer
+    queryset = MultimediaClassification.objects.all()
 
     def get_permissions(self):
         if self.request.method in ["POST", "PUT", "DELETE"]:

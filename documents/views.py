@@ -1,12 +1,11 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from .serializers import (
-    DocumentclassificationSerializer,
-    DocumenttypesSerializer,
+    DocumentClassificationSerializer,
+    DocumentTypesSerializer,
     DocumentSerializer,
 )
-from .models import Document, Documentclassification, Documenttypes
-from rest_framework.decorators import permission_classes
+from .models import Document, DocumentClassification, DocumentTypes
 from rest_framework.permissions import IsAuthenticated
 from users.permissions import IsAdmin, IsEditor, IsAdminOrIsEditorAndOwner
 from django.utils.translation import gettext as _
@@ -15,9 +14,9 @@ from rest_framework import status
 import os
 
 
-class DocumenttypesView(viewsets.ModelViewSet):
-    serializer_class = DocumenttypesSerializer
-    queryset = Documenttypes.objects.all()
+class DocumentTypesView(viewsets.ModelViewSet):
+    serializer_class = DocumentTypesSerializer
+    queryset = DocumentTypes.objects.all()
 
     def get_permissions(self):
         if self.request.method in ["POST", "PUT", "DELETE"]:
@@ -27,9 +26,9 @@ class DocumenttypesView(viewsets.ModelViewSet):
         return super().get_permissions()
 
 
-class DocumentclassificationView(viewsets.ModelViewSet):
-    serializer_class = DocumentclassificationSerializer
-    queryset = Documentclassification.objects.all()
+class DocumentClassificationView(viewsets.ModelViewSet):
+    serializer_class = DocumentClassificationSerializer
+    queryset = DocumentClassification.objects.all()
 
     def get_permissions(self):
         if self.request.method in ["POST", "PUT", "DELETE"]:

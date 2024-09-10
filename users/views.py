@@ -221,4 +221,8 @@ class LogoutView(APIView):
             token.blacklist()
             return Response("Logout exitoso", status=status.HTTP_205_RESET_CONTENT)
         except Exception as e:
-            return Response({"error": "Error al cerrar sesión"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+

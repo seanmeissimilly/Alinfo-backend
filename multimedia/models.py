@@ -5,7 +5,7 @@ from auditlog.registry import auditlog
 
 
 # Creo un nomenclador para clasificar lass multimedias.
-class Multimediaclassification(models.Model):
+class MultimediaClassification(models.Model):
     description = models.CharField(max_length=100, unique=True)
     history = HistoricalRecords()
 
@@ -14,18 +14,18 @@ class Multimediaclassification(models.Model):
         return self.description
 
 
-auditlog.register(Multimediaclassification)
+auditlog.register(MultimediaClassification)
 
 
 # Modelo de Multimedia
 class Multimedia(models.Model):
     title = models.CharField(max_length=200)
-    data = models.FileField(upload_to="multimedia/", null=True, blank=True)
+    data = models.FileField(upload_to="videos/", null=True, blank=True)
     description = models.TextField(max_length=500, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     date = models.DateTimeField(auto_now_add=True)
-    multimediaclassification = models.ForeignKey(
-        Multimediaclassification, on_delete=models.SET_NULL, null=True, blank=True
+    multimediaClassification = models.ForeignKey(
+        MultimediaClassification, on_delete=models.SET_NULL, null=True, blank=True
     )
     history = HistoricalRecords()
     REQUIRED_FIELDS = ["title"]
