@@ -39,7 +39,22 @@ class Document(models.Model):
         upload_to="documents/",
         null=True,
         blank=True,
-        validators=[FileExtensionValidator(allowed_extensions=['pdf', 'doc', 'docx', 'xls', 'xlsx', 'txt', 'tex'])]
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=[
+                    "pdf",
+                    "doc",
+                    "docx",
+                    "xls",
+                    "xlsx",
+                    "txt",
+                    "tex",
+                    "odt",
+                    "ods",
+                    "odp",
+                ]
+            )
+        ],
     )
     description = models.TextField(max_length=500, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
