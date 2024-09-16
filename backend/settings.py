@@ -56,6 +56,8 @@ INSTALLED_APPS = [
     "suggestions",
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True
+
 CORS_ALLOWED_ORIGINS = [
     # para el server de producción
     "http://localhost:4173",
