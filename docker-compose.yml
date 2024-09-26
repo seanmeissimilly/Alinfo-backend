@@ -1,26 +1,28 @@
 version: "3.9"
 
 services:
-  web:
-    build:
-      context: .
-    container_name: web
-    ports:
-      - "8000:8000"
-    command: ["sh", "./start.sh"]
-    env_file:
-      - .env
-    depends_on:
-      - postgres_db
-
   postgres_db:
     image: postgres:16.4-alpine3.20
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=${SQL_NAME}
-      - POSTGRES_USER=${SQL_USER}
-      - POSTGRES_PASSWORD=${SQL_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+
+  web:
+    build:
+      context: .
+    container_name: web
+    command: gunicorn myproject.wsgi:application --bind 0.0.0.0:8000
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres_db
 
 volumes:
   postgres_data:
