@@ -24,5 +24,12 @@ services:
     depends_on:
       - postgres_db
 
+  react_app:
+    build:
+      context: ./path/to/react/app
+    container_name: react_app
+    ports:
+      - "3000:3000"
+
 volumes:
   postgres_data:
