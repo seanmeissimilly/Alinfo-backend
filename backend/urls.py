@@ -8,7 +8,7 @@ from drf_spectacular.views import (
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
-from backend.views import captcha_image
+from . import views
 
 
 # Función para la redirección a la documentación
@@ -23,7 +23,7 @@ urlpatterns = [
     # Rutas del administrador
     path("admin/", admin.site.urls),
     # Rutas para el captcha
-    path("captcha/", captcha_image, name="captcha_image"),
+    path("captcha/", views.CaptchaImageView.as_view(), name="captcha_image"),
     # Rutas de las aplicaciones
     path("users/", include("users.urls")),
     path("blogs/", include("blogs.urls")),

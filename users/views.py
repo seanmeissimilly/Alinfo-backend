@@ -43,15 +43,19 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
-    def post(self, request, *args, **kwargs):
-        # Verificar CAPTCHA
-        captcha_response = verify_captcha(request)
-        if not captcha_response:
-            return Response(
-                {"error": "Invalid CAPTCHA"}, status=status.HTTP_400_BAD_REQUEST
-            )
+    # def post(self, request, *args, **kwargs):
+    #     captcha_token = request.data.get("captcha_token")
+    #     captcha_response = request.data.get("captcha_response")
 
-        return super().post(request, *args, **kwargs)
+    #     print("Captcha Token:", captcha_token)
+    #     print("Captcha Response:", captcha_response)
+
+    #     if not verify_captcha(captcha_token, captcha_response):
+    #         return Response(
+    #             {"error": "Invalid CAPTCHA"}, status=status.HTTP_400_BAD_REQUEST
+    #         )
+
+    #     return super().post(request, *args, **kwargs)
 
 
 # todo : Función para chequear que un username o un correo ya están tomados.
@@ -68,44 +72,43 @@ def check_user_exists(data):
 
 
 # todo:Register
-@api_view(["POST"])
-def register(request):
+class RegisterView(APIView):
+    def post(self, request, *args, **kwargs):
+        captcha_token = request.data.get("captcha_token")
+        captcha_response = request.data.get("captcha_response")
 
-    # Verificar CAPTCHA
-    captcha_response = verify_captcha(request)
-    if not captcha_response:
-        return Response(
-            {"error": "Invalid CAPTCHA"}, status=status.HTTP_400_BAD_REQUEST
-        )
+        if not verify_captcha(captcha_token, captcha_response):
+            return Response(
+                {"error": "Invalid CAPTCHA"}, status=status.HTTP_400_BAD_REQUEST
+            )
+        # Procesar el registro
+        data = request.data
+        try:
+            error_message, error_status = check_user_exists(data)
+            if error_message:
+                return Response(error_message, status=error_status)
 
-    data = request.data
-    try:
-        error_message, error_status = check_user_exists(data)
-        if error_message:
-            return Response(error_message, status=error_status)
+            user_ip = request.META.get("HTTP_X_FORWARDED_FOR")
+            if user_ip:
+                user_ip = user_ip.split(",")[0]
+            else:
+                user_ip = request.META.get("REMOTE_ADDR")
 
-        user_ip = request.META.get("HTTP_X_FORWARDED_FOR")
-        if user_ip:
-            user_ip = user_ip.split(",")[0]
-        else:
-            user_ip = request.META.get("REMOTE_ADDR")
+            user = User.objects.create(
+                user_name=data["user_name"],
+                email=data["email"],
+                password=make_password(data["password"]),
+                last_login_ip=user_ip,
+            )
+            if "image" in request.FILES:
+                user.image = request.FILES["image"]
+                user.save()
 
-        user = User.objects.create(
-            user_name=data["user_name"],
-            email=data["email"],
-            password=make_password(data["password"]),
-            last_login_ip=user_ip,
-        )
-        # todo: Verificar si hay una imagen en los datos
-        if "image" in request.FILES:
-            user.image = request.FILES["image"]
-            user.save()
-
-        serializer = UserSerializerWithToken(user, many=False)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    except Exception as e:
-        message = {"error": _("Algo salió mal: ") + str(e)}
-        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+            serializer = UserSerializerWithToken(user, many=False)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            message = {"error": _("Algo salió mal: ") + str(e)}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
 # todo:Update

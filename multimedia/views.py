@@ -34,15 +34,16 @@ class MultimediaView(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        file_path = instance.data.path
         response = super().destroy(request, *args, **kwargs)
-        if os.path.exists(file_path):
-            try:
-                os.remove(file_path)
-            except Exception as e:
-                message = {
-                    "error": _("Algo salió mal al eliminar el archivo: ") + str(e)
-                }
+        if instance.is_local:
+            file_path = instance.data.path
+            if os.path.exists(file_path):
+                try:
+                    os.remove(file_path)
+                except Exception as e:
+                    message = {
+                        "error": _("Algo salió mal al eliminar el archivo: ") + str(e)
+                    }
                 return Response(message, status=status.HTTP_400_BAD_REQUEST)
         return response
 
