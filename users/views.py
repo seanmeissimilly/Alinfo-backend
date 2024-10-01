@@ -74,13 +74,13 @@ def check_user_exists(data):
 # todo:Register
 class RegisterView(APIView):
     def post(self, request, *args, **kwargs):
-        captcha_token = request.data.get("captcha_token")
-        captcha_response = request.data.get("captcha_response")
+        # captcha_token = request.data.get("captcha_token")
+        # captcha_response = request.data.get("captcha_response")
 
-        if not verify_captcha(captcha_token, captcha_response):
-            return Response(
-                {"error": "Invalid CAPTCHA"}, status=status.HTTP_400_BAD_REQUEST
-            )
+        # if not verify_captcha(captcha_token, captcha_response):
+        #     return Response(
+        #         {"error": "Invalid CAPTCHA"}, status=status.HTTP_400_BAD_REQUEST
+        #     )
         # Procesar el registro
         data = request.data
         try:
