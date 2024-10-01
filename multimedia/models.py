@@ -2,7 +2,7 @@ from django.db import models
 from users.models import User
 from simple_history.models import HistoricalRecords
 from auditlog.registry import auditlog
-from django.core.validators import FileExtensionValidator
+from django.core.validators import FileExtensionValidator, URLValidator
 
 
 # Creo un nomenclador para clasificar lass multimedias.
@@ -25,8 +25,27 @@ class Multimedia(models.Model):
         upload_to="videos/",
         null=True,
         blank=True,
-        validators=[FileExtensionValidator(allowed_extensions=['mp4', 'avi', 'mov', 'wmv', 'flv', 'mkv', 'mpg', 'mpeg', 'webm', '3gp'])]
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=[
+                    "mp4",
+                    "avi",
+                    "mov",
+                    "wmv",
+                    "flv",
+                    "mkv",
+                    "mpg",
+                    "mpeg",
+                    "webm",
+                    "3gp",
+                ]
+            )
+        ],
     )
+    external_url = models.URLField(
+        max_length=200, null=True, blank=True, validators=[URLValidator()]
+    )
+    is_local = models.BooleanField(default=True)
     description = models.TextField(max_length=500, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     date = models.DateTimeField(auto_now_add=True)

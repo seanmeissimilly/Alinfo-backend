@@ -17,6 +17,7 @@ from drf_spectacular.utils import (
     OpenApiResponse,
     OpenApiRequest,
 )
+from backend.views import verify_captcha
 
 
 # todo:Login
@@ -42,6 +43,16 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
+    def post(self, request, *args, **kwargs):
+        # Verificar CAPTCHA
+        captcha_response = verify_captcha(request)
+        if not captcha_response:
+            return Response(
+                {"error": "Invalid CAPTCHA"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return super().post(request, *args, **kwargs)
+
 
 # todo : Función para chequear que un username o un correo ya están tomados.
 def check_user_exists(data):
@@ -59,6 +70,14 @@ def check_user_exists(data):
 # todo:Register
 @api_view(["POST"])
 def register(request):
+
+    # Verificar CAPTCHA
+    captcha_response = verify_captcha(request)
+    if not captcha_response:
+        return Response(
+            {"error": "Invalid CAPTCHA"}, status=status.HTTP_400_BAD_REQUEST
+        )
+
     data = request.data
     try:
         error_message, error_status = check_user_exists(data)

@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "simple_history",
     "auditlog",
     "import_export",
+    "captcha",
     "blogs",
     "users",
     "applications",
