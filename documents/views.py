@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework import viewsets, status, generics
 from .serializers import (
     DocumentClassificationSerializer,
     DocumentTypesSerializer,
@@ -10,7 +10,6 @@ from rest_framework.permissions import IsAuthenticated
 from users.permissions import IsAdmin, IsEditor, IsAdminOrIsEditorAndOwner
 from django.utils.translation import gettext as _
 from rest_framework.response import Response
-from rest_framework import status
 import os
 
 
@@ -68,3 +67,18 @@ class DocumentView(viewsets.ModelViewSet):
                 }
                 return Response(message, status=status.HTTP_400_BAD_REQUEST)
         return response
+
+
+class DocumentSearchView(generics.ListAPIView):
+    queryset = Document.objects.all()
+    serializer_class = DocumentSerializer
+
+    def get_queryset(self):
+        query = self.request.query_params.get("q", None)
+        if query:
+            return Document.objects.filter(extracted_text__icontains=query)
+        return Document.objects.all()
+
+    def get_permissions(self):
+        self.permission_classes = [IsAuthenticated]
+        return super().get_permissions()

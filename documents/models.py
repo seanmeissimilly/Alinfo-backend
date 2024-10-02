@@ -3,6 +3,12 @@ from users.models import User
 from simple_history.models import HistoricalRecords
 from auditlog.registry import auditlog
 from django.core.validators import FileExtensionValidator
+from tika import parser
+
+
+def extract_text(file_path):
+    parsed = parser.from_file(file_path)
+    return parsed["content"]
 
 
 # Creo un nomenclador para clasificar los documentos.
@@ -66,7 +72,13 @@ class Document(models.Model):
         DocumentTypes, on_delete=models.SET_NULL, null=True, blank=True
     )
     history = HistoricalRecords()
+    extracted_text = models.TextField(blank=True, null=True)
     REQUIRED_FIELDS = ["title"]
+
+    def save(self, *args, **kwargs):
+        if self.data:
+            self.extracted_text = extract_text(self.data.path)
+        super().save(*args, **kwargs)
 
     # Para que se muestre en el modulo de administración
     def __str__(self):
