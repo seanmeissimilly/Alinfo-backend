@@ -1,7 +1,6 @@
 import random
 import string
 import uuid
-import logging
 import os
 from django.http import JsonResponse
 from captcha.image import ImageCaptcha
