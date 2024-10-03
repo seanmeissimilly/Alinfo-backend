@@ -4,11 +4,21 @@ from simple_history.models import HistoricalRecords
 from auditlog.registry import auditlog
 from django.core.validators import FileExtensionValidator
 from tika import parser
+from decouple import config
+import requests
+import os
+
+TIKA_SERVER_URL = config("TIKA_SERVER_URL")
 
 
 def extract_text(file_path):
-    parsed = parser.from_file(file_path)
-    return parsed["content"]
+    with open(file_path, "rb") as f:
+        response = requests.put(
+            TIKA_SERVER_URL,
+            data=f,
+            headers={"Content-Disposition": f"attachment; filename={file_path}"},
+        )
+        return response.text
 
 
 # Creo un nomenclador para clasificar los documentos.
@@ -77,7 +87,22 @@ class Document(models.Model):
 
     def save(self, *args, **kwargs):
         if self.data:
-            self.extracted_text = extract_text(self.data.path)
+            try:
+                file_path = self.data.path
+                file_path = file_path.replace("\\", "/")
+                index = file_path.rfind("/")
+                if index != -1:
+                    full_path = (
+                        file_path[: index + 1] + "documents/" + file_path[index + 1 :]
+                    )
+                if os.path.exists(full_path):
+                    parsed = parser.from_file(full_path)
+                    self.extracted_text = parsed.get("content", "")
+                else:
+                    raise FileNotFoundError(f"File not found: {file_path}")
+
+            except Exception as e:
+                self.extracted_text = ""
         super().save(*args, **kwargs)
 
     # Para que se muestre en el modulo de administración

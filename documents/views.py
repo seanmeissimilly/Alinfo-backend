@@ -10,6 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from users.permissions import IsAdmin, IsEditor, IsAdminOrIsEditorAndOwner
 from django.utils.translation import gettext as _
 from rest_framework.response import Response
+from django.contrib.postgres.search import SearchVector
 import os
 
 
@@ -70,13 +71,15 @@ class DocumentView(viewsets.ModelViewSet):
 
 
 class DocumentSearchView(generics.ListAPIView):
-    queryset = Document.objects.all()
     serializer_class = DocumentSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        query = self.request.query_params.get("q", None)
+        query = self.request.GET.get("q")
         if query:
-            return Document.objects.filter(extracted_text__icontains=query)
+            return Document.objects.annotate(
+                search=SearchVector("extracted_text")
+            ).filter(search=query)
         return Document.objects.all()
 
     def get_permissions(self):
