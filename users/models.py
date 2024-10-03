@@ -91,3 +91,13 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 auditlog.register(User)
+
+
+class Captcha(models.Model):
+    text = models.CharField(max_length=10)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def is_valid(self):
+        # Definir el tiempo de validez en minutos (por ejemplo, 5 minutos)
+        expiration_time = timezone.now() - timezone.timedelta(minutes=5)
+        return self.created_at >= expiration_time

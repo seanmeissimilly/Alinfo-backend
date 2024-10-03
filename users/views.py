@@ -43,19 +43,21 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
-    # def post(self, request, *args, **kwargs):
-    #     captcha_token = request.data.get("captcha_token")
-    #     captcha_response = request.data.get("captcha_response")
+    def post(self, request, *args, **kwargs):
+        captcha_value = request.data.get("captcha_value")
+        if not captcha_value:
+            return Response(
+                {"error": "Captcha is required"}, status=status.HTTP_400_BAD_REQUEST
+            )
 
-    #     print("Captcha Token:", captcha_token)
-    #     print("Captcha Response:", captcha_response)
+        # Verificar el CAPTCHA
+        if not verify_captcha(captcha_value):
+            return Response(
+                {"error": "Invalid or expired CAPTCHA"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
-    #     if not verify_captcha(captcha_token, captcha_response):
-    #         return Response(
-    #             {"error": "Invalid CAPTCHA"}, status=status.HTTP_400_BAD_REQUEST
-    #         )
-
-    #     return super().post(request, *args, **kwargs)
+        return Response({"message": "Login successful"})
 
 
 # todo : Función para chequear que un username o un correo ya están tomados.
@@ -74,14 +76,18 @@ def check_user_exists(data):
 # todo:Register
 class RegisterView(APIView):
     def post(self, request, *args, **kwargs):
-        # captcha_token = request.data.get("captcha_token")
-        # captcha_response = request.data.get("captcha_response")
+        captcha_value = request.data.get("captcha_value")
+        if not captcha_value:
+            return Response(
+                {"error": "Captcha is required"}, status=status.HTTP_400_BAD_REQUEST
+            )
 
-        # if not verify_captcha(captcha_token, captcha_response):
-        #     return Response(
-        #         {"error": "Invalid CAPTCHA"}, status=status.HTTP_400_BAD_REQUEST
-        #     )
-        # Procesar el registro
+        # Verificar el CAPTCHA
+        if not verify_captcha(captcha_value):
+            return Response(
+                {"error": "Invalid or expired CAPTCHA"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         data = request.data
         try:
             error_message, error_status = check_user_exists(data)

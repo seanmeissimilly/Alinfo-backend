@@ -1,13 +1,14 @@
 import random
 import string
+import uuid
 import os
 from django.http import JsonResponse
 from captcha.image import ImageCaptcha
 from rest_framework.views import APIView
-from rest_framework_simplejwt.tokens import AccessToken
-from django.conf import settings
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
+from users.models import Captcha
+from django.conf import settings
 
 
 def generate_captcha_text(length=4):
@@ -19,30 +20,38 @@ class CaptchaImageView(APIView):
     def get(self, request, *args, **kwargs):
         image = ImageCaptcha()
         captcha_text = generate_captcha_text()
-        print(captcha_text)
         data = image.generate(captcha_text)
 
-        # Guardar la imagen en un archivo temporal
-        file_path = os.path.join(settings.MEDIA_ROOT, f"{captcha_text}.png")
+        # Generar un nombre de archivo aleatorio
+        file_name = f"{uuid.uuid4()}.png"
+        file_path = f"captchas/{file_name}"
         default_storage.save(file_path, ContentFile(data.read()))
 
-        # Crear un token con el texto del CAPTCHA sin asociarlo a un usuario
-        token = AccessToken()
-        token["captcha_text"] = captcha_text
-        captcha_token = str(token)
+        # Guardar el CAPTCHA en la base de datos
+        Captcha.objects.create(text=captcha_text)
 
         # Devolver la URL de la imagen
         captcha_image_url = default_storage.url(file_path)
 
         return JsonResponse(
-            {"captcha_image_url": captcha_image_url, "captcha_token": captcha_token},
+            {"captcha_image_url": captcha_image_url},
         )
 
 
-def verify_captcha(captcha_token, user_input):
+def verify_captcha(user_input):
     try:
-        token = AccessToken(captcha_token)
-        captcha_text = token["captcha_text"]
-        return user_input and user_input.upper() == captcha_text
-    except Exception:
+        captcha = Captcha.objects.filter(text=user_input.upper()).first()
+        if captcha and captcha.is_valid():
+            # Obtener la ruta del archivo de imagen
+            file_name = f"captchas/{captcha.text}.png"
+            file_path = os.path.join(settings.MEDIA_ROOT, file_name)
+
+            # Eliminar el archivo de imagen si existe
+            if default_storage.exists(file_path):
+                default_storage.delete(file_path)
+
+            captcha.delete()  # Eliminar el CAPTCHA de la base de datos
+            return True
         return False
+    except Exception as e:
+        return
