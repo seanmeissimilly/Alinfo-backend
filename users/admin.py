@@ -1,6 +1,5 @@
 from django.contrib import admin
-from django.core.exceptions import PermissionDenied
-from .models import User
+from .models import User, Captcha
 from simple_history.admin import SimpleHistoryAdmin
 from .resources import UserResource
 from import_export.admin import ImportExportModelAdmin
@@ -14,3 +13,9 @@ class UserAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
         if obj is not None and obj.is_superuser and request.user.is_superuser:
             return False
         return super().has_delete_permission(request, obj)
+
+
+@admin.register(Captcha)
+class CaptchaAdmin(admin.ModelAdmin):
+    list_display = ("text", "created_at", "image_file")
+    search_fields = ("text",)

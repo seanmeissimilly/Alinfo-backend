@@ -99,6 +99,12 @@ class Captcha(models.Model):
     image_file = models.CharField(max_length=200, blank=True, null=True)
 
     def is_valid(self):
-        # Definir el tiempo de validez en minutos (por ejemplo, 5 minutos)
-        expiration_time = timezone.now() - timezone.timedelta(minutes=5)
+        # Definir el tiempo de validez en minutos (por ejemplo, 3 minutos)
+        expiration_time = timezone.now() - timezone.timedelta(minutes=3)
         return self.created_at >= expiration_time
+
+    def __str__(self):
+        return self.text
+
+
+auditlog.register(Captcha)

@@ -18,6 +18,15 @@ def generate_captcha_text(length=4):
     return "".join(random.choice(letters) for i in range(length))
 
 
+def get_file_path(file_name):
+    return os.path.join(settings.MEDIA_ROOT, f"captchas/{file_name}").replace("\\", "/")
+
+
+def delete_file(file_path):
+    if default_storage.exists(file_path):
+        default_storage.delete(file_path)
+
+
 class CaptchaImageView(APIView):
     def get(self, request, *args, **kwargs):
         image = ImageCaptcha()
@@ -43,37 +52,21 @@ class CaptchaImageView(APIView):
 def verify_captcha(captcha_value):
     try:
         # todo: Eliminar CAPTCHAs expirados y sus archivos de imagen
-        expiration_time = timezone.now() - timezone.timedelta(minutes=5)
-        print(f"Expiration time: {expiration_time}")
+        expiration_time = timezone.now() - timezone.timedelta(minutes=3)
         expired_captchas = Captcha.objects.filter(created_at__lt=expiration_time)
-        print(f"Expired CAPTCHAs: {expired_captchas.count()}")
 
         for captcha in expired_captchas:
-            # Obtener la ruta del archivo de imagen
-            file_path = os.path.join(
-                settings.MEDIA_ROOT, f"captchas/{captcha.image_file}"
-            )
-            file_path = file_path.replace("\\", "/")
+            file_path = get_file_path(captcha.image_file)
+            delete_file(file_path)
 
-            # Eliminar el archivo de imagen si existe
-            if default_storage.exists(file_path):
-                default_storage.delete(file_path)
-
-        expired_captchas.delete()  # Eliminar los CAPTCHAs expirados de la base de datos
+        expired_captchas.delete()  # todo: Eliminar los CAPTCHAs expirados de la base de datos
 
         captcha = Captcha.objects.filter(text=captcha_value.upper()).first()
         if captcha and captcha.is_valid():
-            # Obtener la ruta del archivo de imagen
-            file_path = os.path.join(
-                settings.MEDIA_ROOT, f"captchas/{captcha.image_file}"
-            )
-            file_path = file_path.replace("\\", "/")
+            file_path = get_file_path(captcha.image_file)
+            delete_file(file_path)
 
-            # Eliminar el archivo de imagen si existe
-            if default_storage.exists(file_path):
-                default_storage.delete(file_path)
-
-            captcha.delete()  # Eliminar el CAPTCHA de la base de datos
+            captcha.delete()  # todo: Eliminar el CAPTCHA de la base de datos
             return True
         return False
     except Exception:
