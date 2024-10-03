@@ -38,9 +38,9 @@ class CaptchaImageView(APIView):
         )
 
 
-def verify_captcha(user_input):
+def verify_captcha(captcha_value):
     try:
-        captcha = Captcha.objects.filter(text=user_input.upper()).first()
+        captcha = Captcha.objects.filter(text=captcha_value.upper()).first()
         if captcha and captcha.is_valid():
             # Obtener la ruta del archivo de imagen
             file_name = f"captchas/{captcha.text}.png"
