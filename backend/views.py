@@ -1,6 +1,7 @@
 import random
 import string
 import uuid
+import logging
 import os
 from django.http import JsonResponse
 from captcha.image import ImageCaptcha
@@ -9,6 +10,7 @@ from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from users.models import Captcha
 from django.conf import settings
+from django.utils import timezone
 
 
 def generate_captcha_text(length=4):
@@ -28,7 +30,7 @@ class CaptchaImageView(APIView):
         default_storage.save(file_path, ContentFile(data.read()))
 
         # Guardar el CAPTCHA en la base de datos
-        Captcha.objects.create(text=captcha_text)
+        Captcha.objects.create(text=captcha_text, image_file=file_name)
 
         # Devolver la URL de la imagen
         captcha_image_url = default_storage.url(file_path)
@@ -40,11 +42,32 @@ class CaptchaImageView(APIView):
 
 def verify_captcha(captcha_value):
     try:
+        # todo: Eliminar CAPTCHAs expirados y sus archivos de imagen
+        expiration_time = timezone.now() - timezone.timedelta(minutes=5)
+        print(f"Expiration time: {expiration_time}")
+        expired_captchas = Captcha.objects.filter(created_at__lt=expiration_time)
+        print(f"Expired CAPTCHAs: {expired_captchas.count()}")
+
+        for captcha in expired_captchas:
+            # Obtener la ruta del archivo de imagen
+            file_path = os.path.join(
+                settings.MEDIA_ROOT, f"captchas/{captcha.image_file}"
+            )
+            file_path = file_path.replace("\\", "/")
+
+            # Eliminar el archivo de imagen si existe
+            if default_storage.exists(file_path):
+                default_storage.delete(file_path)
+
+        expired_captchas.delete()  # Eliminar los CAPTCHAs expirados de la base de datos
+
         captcha = Captcha.objects.filter(text=captcha_value.upper()).first()
         if captcha and captcha.is_valid():
             # Obtener la ruta del archivo de imagen
-            file_name = f"captchas/{captcha.text}.png"
-            file_path = os.path.join(settings.MEDIA_ROOT, file_name)
+            file_path = os.path.join(
+                settings.MEDIA_ROOT, f"captchas/{captcha.image_file}"
+            )
+            file_path = file_path.replace("\\", "/")
 
             # Eliminar el archivo de imagen si existe
             if default_storage.exists(file_path):
@@ -53,5 +76,5 @@ def verify_captcha(captcha_value):
             captcha.delete()  # Eliminar el CAPTCHA de la base de datos
             return True
         return False
-    except Exception as e:
+    except Exception:
         return

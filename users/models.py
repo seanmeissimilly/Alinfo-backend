@@ -96,6 +96,7 @@ auditlog.register(User)
 class Captcha(models.Model):
     text = models.CharField(max_length=10)
     created_at = models.DateTimeField(auto_now_add=True)
+    image_file = models.CharField(max_length=200, blank=True, null=True)
 
     def is_valid(self):
         # Definir el tiempo de validez en minutos (por ejemplo, 5 minutos)

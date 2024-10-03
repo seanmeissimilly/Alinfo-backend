@@ -57,7 +57,8 @@ class MyTokenObtainPairView(TokenObtainPairView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        return Response({"message": "Login successful"})
+        response = super().post(request, *args, **kwargs)
+        return Response(response.data, status=status.HTTP_200_OK)
 
 
 # todo : Función para chequear que un username o un correo ya están tomados.
@@ -76,7 +77,8 @@ def check_user_exists(data):
 # todo:Register
 class RegisterView(APIView):
     def post(self, request, *args, **kwargs):
-        captcha_value = request.data.get("captcha_value")
+        data = request.data
+        captcha_value = data.get("captcha_value")
         if not captcha_value:
             return Response(
                 {"error": "Captcha is required"}, status=status.HTTP_400_BAD_REQUEST
@@ -88,7 +90,7 @@ class RegisterView(APIView):
                 {"error": "Invalid or expired CAPTCHA"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        data = request.data
+
         try:
             error_message, error_status = check_user_exists(data)
             if error_message:
