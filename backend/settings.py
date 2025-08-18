@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = "RENDER" not in os.environ
 
 ALLOWED_HOSTS = ["*"]
 
@@ -119,7 +119,7 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": True,
-    "ALGORITHM": "HS512",
+    "ALGORITHM": "HS256",
     "SIGNING_KEY": SECRET_KEY,
     "VERIFYING_KEY": None,
     "AUDIENCE": None,
@@ -152,6 +152,7 @@ MIDDLEWARE = [
     "django.middleware.locale.LocaleMiddleware",
     "simple_history.middleware.HistoryRequestMiddleware",
     "auditlog.middleware.AuditlogMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = "backend.urls"
@@ -187,8 +188,7 @@ DATABASES = {
     }
 }
 
-DATABASES = {"default": dj_database_url.parse(config("DATABASE_URL"))}
-
+# DATABASES = {"default": dj_database_url.parse(config("DATABASE_URL"))}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -221,7 +221,7 @@ LANGUAGES = (
 )
 
 # Configuración de zona horaria para América del Este (-5)
-TIME_ZONE = "America/New_York"
+TIME_ZONE = "America/Havana"
 
 # Configuración de uso de traducciones
 USE_I18N = True  # use internationalization
@@ -236,7 +236,9 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+if not DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, "static")
+    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
@@ -253,3 +255,23 @@ AUTH_USER_MODEL = "users.User"
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, "locale"),
 ]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'daphne': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+        'channels': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
