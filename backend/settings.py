@@ -119,7 +119,7 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": True,
-    "ALGORITHM": "HS512",
+    "ALGORITHM": "HS256",
     "SIGNING_KEY": SECRET_KEY,
     "VERIFYING_KEY": None,
     "AUDIENCE": None,
@@ -221,7 +221,7 @@ LANGUAGES = (
 )
 
 # Configuración de zona horaria para América del Este (-5)
-TIME_ZONE = "America/New_York"
+TIME_ZONE = "America/Havana"
 
 # Configuración de uso de traducciones
 USE_I18N = True  # use internationalization
@@ -255,3 +255,23 @@ AUTH_USER_MODEL = "users.User"
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, "locale"),
 ]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'daphne': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+        'channels': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
